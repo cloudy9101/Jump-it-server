@@ -4,7 +4,7 @@ module.exports = {
   },
   db: {
     mongoUrl:
-      'mongodb://localhost:27017/jumpit'
+      'mongodb+srv://liu:jumpit@jumpit-mepd9.mongodb.net/jumpit?retryWrites=true&w=majority'
   },
   privateKey: 'you can change to whatever i like'
 };

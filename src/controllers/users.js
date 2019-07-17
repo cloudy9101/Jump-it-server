@@ -3,9 +3,13 @@ const User = require('../models/User');
 const RestResponse = require('../utils/RestResponse');
 const jwt = require('jsonwebtoken');
 const config = require('../config');
-const { NotFound, PermissionDeny, UnprocessableEntity } = require('../middleWare/errorHandler');
+const {
+  NotFound,
+  PermissionDeny,
+  UnprocessableEntity
+} = require('../middleWare/errorHandler');
 
-const signUp = async function (req, res) {
+const signUp = async function(req, res) {
   const {
     email,
     username,
@@ -34,6 +38,7 @@ const signUp = async function (req, res) {
     height,
     weight
   });
+
   bcrypt.genSalt(10, (err, salt) => {
     bcrypt.hash(newUser.password, salt, async (err, hash) => {
       if (err) throw err;
@@ -42,12 +47,11 @@ const signUp = async function (req, res) {
       const result = await newUser.save();
 
       if (result) {
-        console.log("success");
         res.json(RestResponse.Success({}, 'Signup Success'));
       }
     });
   });
-}
+};
 
 const signIn = async function(req, res) {
   const { email, password } = req.body;
@@ -56,19 +60,16 @@ const signIn = async function(req, res) {
   const result = await bcrypt.compare(password, curUser.password);
   if (result) {
     const payload = {
-      id: curUser._id,
+      id: curUser._id
     };
     const token = await jwt.sign(payload, config.privateKey);
-    if (token)
-      res.json(
-        RestResponse.Success({  token: 'Bearer ' + token })
-      );
+    if (token) res.json(RestResponse.Success({ token: 'Bearer ' + token }));
   } else {
     throw new PermissionDeny('Password Incorrect..');
   }
-}
+};
 
 module.exports = {
   signUp,
   signIn
-}
+};
