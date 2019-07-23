@@ -7,6 +7,7 @@ const errorHandler = function(err, req, res, next) {
       break;
     default:
       res.status(500).json('Internal Error..');
+      throw err;
   }
 };
 
