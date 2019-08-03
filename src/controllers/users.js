@@ -45,9 +45,14 @@ const signUp = async function(req, res) {
 
       newUser.password = hash;
       const result = await newUser.save();
-
+      const curUser = await User.findOne({ email });
+      console.log(curUser);
       if (result) {
-        res.json(RestResponse.Success({}, 'Signup Success'));
+        const token = await jwt.sign(curUser.id, config.privateKey);
+        if (token) res.json(RestResponse.Success({ token: 'Bearer ' + token }));
+        res.json(
+          RestResponse.Success({ token: 'Bearer ' + token }, 'Signup Success')
+        );
       }
     });
   });
