@@ -74,7 +74,14 @@ const signIn = async function(req, res) {
   }
 };
 
+const findUser = async function(req, res) {
+  const token = req.get('Authorization').split(' ')[1];
+  const curUserId = jwt.verify(token, config.privateKey).id;
+  const curUser = await User.findOne({ _id: curUserId }, { password: false });
+  res.json(RestResponse.Success(curUser));
+};
 module.exports = {
   signUp,
-  signIn
+  signIn,
+  findUser
 };
