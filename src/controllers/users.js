@@ -46,9 +46,6 @@ const signUp = async function(req, res) {
       newUser.password = hash;
       const result = await newUser.save();
       const curUser = await User.findOne({ email });
-      const payload = {
-        id: curUser._id
-      };
       if (curUser) {
         const payload = {
           id: curUser._id
@@ -77,10 +74,11 @@ const signIn = async function(req, res) {
 };
 
 const findUser = async function(req, res) {
+  console.log(req.get('Authorization').split(' '));
   const token = req.get('Authorization').split(' ')[1];
 
   const curUserId = jwt.verify(token, config.privateKey).id;
-  console.log(curUserId, 'id.........');
+
   const curUser = await User.findOne(
     { _id: curUserId },
     { password: false, _id: false }
