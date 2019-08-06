@@ -46,13 +46,15 @@ const signUp = async function(req, res) {
       newUser.password = hash;
       const result = await newUser.save();
       const curUser = await User.findOne({ email });
-      console.log(curUser);
-      if (result) {
-        const token = await jwt.sign(curUser.id, config.privateKey);
+      const payload = {
+        id: curUser._id
+      };
+      if (curUser) {
+        const payload = {
+          id: curUser._id
+        };
+        const token = await jwt.sign(payload, config.privateKey);
         if (token) res.json(RestResponse.Success({ token: 'Bearer ' + token }));
-        res.json(
-          RestResponse.Success({ token: 'Bearer ' + token }, 'Signup Success')
-        );
       }
     });
   });
@@ -76,8 +78,13 @@ const signIn = async function(req, res) {
 
 const findUser = async function(req, res) {
   const token = req.get('Authorization').split(' ')[1];
+
   const curUserId = jwt.verify(token, config.privateKey).id;
-  const curUser = await User.findOne({ _id: curUserId }, { password: false });
+  console.log(curUserId, 'id.........');
+  const curUser = await User.findOne(
+    { _id: curUserId },
+    { password: false, _id: false }
+  );
   res.json(RestResponse.Success(curUser));
 };
 module.exports = {
