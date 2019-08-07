@@ -45,9 +45,13 @@ const signUp = async function(req, res) {
 
       newUser.password = hash;
       const result = await newUser.save();
-
-      if (result) {
-        res.json(RestResponse.Success({}, 'Signup Success'));
+      const curUser = await User.findOne({ email });
+      if (curUser) {
+        const payload = {
+          id: curUser._id
+        };
+        const token = await jwt.sign(payload, config.privateKey);
+        if (token) res.json(RestResponse.Success({ token: 'Bearer ' + token }));
       }
     });
   });
@@ -69,7 +73,20 @@ const signIn = async function(req, res) {
   }
 };
 
+const findUser = async function(req, res) {
+  console.log(req.get('Authorization').split(' '));
+  const token = req.get('Authorization').split(' ')[1];
+
+  const curUserId = jwt.verify(token, config.privateKey).id;
+
+  const curUser = await User.findOne(
+    { _id: curUserId },
+    { password: false, _id: false }
+  );
+  res.json(RestResponse.Success(curUser));
+};
 module.exports = {
   signUp,
-  signIn
+  signIn,
+  findUser
 };
