@@ -1,6 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const { signUp, signIn, findUser } = require('../controllers/users');
+const {
+  signUp,
+  signIn,
+  findUser,
+  changePassword
+} = require('../controllers/users');
 const { exercises, diets, addDiet } = require('../controllers/plan');
 const { foods, updateFood, addFood, deleteFood } = require('../controllers/foods');
 const asyncHandler = require('../utils/asyncHandler');
@@ -12,6 +17,7 @@ router.get('/test', (req, res) => {
 router.post('/signup', asyncHandler(signUp));
 router.post('/signin', asyncHandler(signIn));
 router.get('/find', asyncHandler(findUser));
+router.put('/password', asyncHandler(changePassword));
 
 router.get('/plan/exercises', asyncHandler(exercises));
 router.get('/plan/diets', asyncHandler(diets));

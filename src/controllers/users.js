@@ -74,7 +74,6 @@ const signIn = async function(req, res) {
 };
 
 const findUser = async function(req, res) {
-  console.log(req.get('Authorization').split(' '));
   const token = req.get('Authorization').split(' ')[1];
 
   const curUserId = jwt.verify(token, config.privateKey).id;
@@ -85,8 +84,33 @@ const findUser = async function(req, res) {
   );
   res.json(RestResponse.Success(curUser));
 };
+
+const changePassword = async function(req, res) {
+  const token = req.get('Authorization').split(' ')[1];
+  const curUserId = jwt.verify(token, config.privateKey).id;
+  const curUser = await User.findOne({ _id: curUserId });
+  let { password, newPassword } = req.body;
+  const match = await bcrypt.compare(password, curUser.password);
+
+  if (match) {
+    bcrypt.genSalt(10, function(err, salt) {
+      bcrypt.hash(newPassword, salt, async function(err, hash) {
+        newPassword = hash;
+        const result = await User.updateOne(
+          { _id: curUserId },
+          { password: newPassword }
+        );
+
+        if (result) res.json(RestResponse.Success('Success..'));
+      });
+    });
+  } else {
+    throw new PermissionDeny('Password Incorrect..');
+  }
+};
 module.exports = {
   signUp,
   signIn,
-  findUser
+  findUser,
+  changePassword
 };
