@@ -1,63 +1,191 @@
-[
-  [
-    { "name": "Jumping Jacks", "value": "90" },
-    { "name": "Pushups of Choice", "value": "20" },
-    { "name": "Situps", "value": "50" },
-    { "name": "Bird Dogs", "value": "30" },
-    { "name": "Walking Lunges", "value": "35" },
-    { "name": "Hinges", "value": "20" },
-    { "name": "Jumping Squats", "value": "15" },
-    { "name": "High Knees", "value": "90" }
+{
+  "normal": [
+    [
+      { "name": "Jumping Jacks", "value": "90" },
+      { "name": "Pushups of Choice", "value": "20" },
+      { "name": "Situps", "value": "50" },
+      { "name": "Bird Dogs", "value": "30" },
+      { "name": "Walking Lunges", "value": "35" },
+      { "name": "Hinges", "value": "20" },
+      { "name": "Jumping Squats", "value": "15" },
+      { "name": "High Knees", "value": "90" }
+    ],
+    [
+      { "name": "High Knees", "value": "40" },
+      { "name": "Squats", "value": "20" },
+      { "name": "Pushups of Choice", "value": "10" },
+      { "name": "Situps", "value": "45" },
+      { "name": "Burpees", "value": "10" },
+      { "name": "Walking Lunges", "value": "25" },
+      { "name": "Step Ups", "value": "25" },
+      { "name": "Jumping Jacks", "value": "40" }
+    ],
+    [
+      { "name": "Jumping Jacks", "value": "70" },
+      { "name": "Vertical Leg Crunches", "value": "30" },
+      { "name": "Squats", "value": "20" },
+      { "name": "pushups of choice", "value": "15" },
+      { "name": "Step Ups", "value": "30" },
+      { "name": "Plank Ihs", "value": "60 s" },
+      { "name": "Burpees", "value": "10" },
+      { "name": "High Knees", "value": "70" }
+    ],
+    [
+      { "name": "Jumping Jacks", "value": "50" },
+      { "name": "Tricep Dips SO Russian Twists", "value": "10" },
+      { "name": "Pushups of Choice ", "value": "10" },
+      { "name": "Downward Dog", "value": "30" },
+      { "name": "Knee to Elbow Crunch", "value": "20" },
+      { "name": "Bird Dogs", "value": "20" },
+      { "name": "High Knees", "value": "50" }
+    ],
+    [
+      { "name": "Rest", "value": "" }
+    ],
+    [
+      { "name": "High Knees", "value": "80" },
+      { "name": "Leg Lifts each", "value": "30" },
+      { "name": "Tricep Dips", "value": "15" },
+      { "name": "Russian Twists", "value": "75" },
+      { "name": "Plle'", "value": "20" },
+      { "name": "on Hand Plank", "value": "1:00" },
+      { "name": "jumping jacks", "value": "80" }
+    ],
+    [
+      { "name": "High Knees", "value": "60" },
+      { "name": "Low Side lunges", "value": "20" },
+      { "name": "Hinge", "value": "15" },
+      { "name": "Squats", "value": "20" },
+      { "name": "Gluteal Bridges", "value": "30" },
+      { "name": "Russian Twists", "value": "60" },
+      { "name": "Pile", "value": "15" },
+      { "name": "lumping", "value": "60" }
+    ]
   ],
-  [
-    { "name": "High Knees", "value": "40" },
-    { "name": "Squats", "value": "20" },
-    { "name": "Pushups of Choice", "value": "10" },
-    { "name": "Situps", "value": "45" },
-    { "name": "Burpees", "value": "10" },
-    { "name": "Walking Lunges", "value": "25" },
-    { "name": "Step Ups", "value": "25" },
-    { "name": "Jumping Jacks", "value": "40" }
+  "low": [
+    [
+      { "name": "Jumping Jacks", "value": "90" },
+      { "name": "Pushups of Choice", "value": "20" },
+      { "name": "Situps", "value": "50" },
+      { "name": "Bird Dogs", "value": "30" },
+      { "name": "Walking Lunges", "value": "35" },
+      { "name": "Hinges", "value": "20" },
+      { "name": "Jumping Squats", "value": "15" },
+      { "name": "High Knees", "value": "90" }
+    ],
+    [
+      { "name": "High Knees", "value": "40" },
+      { "name": "Squats", "value": "20" },
+      { "name": "Pushups of Choice", "value": "10" },
+      { "name": "Situps", "value": "45" },
+      { "name": "Burpees", "value": "10" },
+      { "name": "Walking Lunges", "value": "25" },
+      { "name": "Step Ups", "value": "25" },
+      { "name": "Jumping Jacks", "value": "40" }
+    ],
+    [
+      { "name": "Jumping Jacks", "value": "70" },
+      { "name": "Vertical Leg Crunches", "value": "30" },
+      { "name": "Squats", "value": "20" },
+      { "name": "pushups of choice", "value": "15" },
+      { "name": "Step Ups", "value": "30" },
+      { "name": "Plank Ihs", "value": "60 s" },
+      { "name": "Burpees", "value": "10" },
+      { "name": "High Knees", "value": "70" }
+    ],
+    [
+      { "name": "Jumping Jacks", "value": "50" },
+      { "name": "Tricep Dips SO Russian Twists", "value": "10" },
+      { "name": "Pushups of Choice ", "value": "10" },
+      { "name": "Downward Dog", "value": "30" },
+      { "name": "Knee to Elbow Crunch", "value": "20" },
+      { "name": "Bird Dogs", "value": "20" },
+      { "name": "High Knees", "value": "50" }
+    ],
+    [
+      { "name": "Rest", "value": "" }
+    ],
+    [
+      { "name": "High Knees", "value": "80" },
+      { "name": "Leg Lifts each", "value": "30" },
+      { "name": "Tricep Dips", "value": "15" },
+      { "name": "Russian Twists", "value": "75" },
+      { "name": "Plle'", "value": "20" },
+      { "name": "on Hand Plank", "value": "1:00" },
+      { "name": "jumping jacks", "value": "80" }
+    ],
+    [
+      { "name": "High Knees", "value": "60" },
+      { "name": "Low Side lunges", "value": "20" },
+      { "name": "Hinge", "value": "15" },
+      { "name": "Squats", "value": "20" },
+      { "name": "Gluteal Bridges", "value": "30" },
+      { "name": "Russian Twists", "value": "60" },
+      { "name": "Pile", "value": "15" },
+      { "name": "lumping", "value": "60" }
+    ]
   ],
-  [
-    { "name": "Jumping Jacks", "value": "70" },
-    { "name": "Vertical Leg Crunches", "value": "30" },
-    { "name": "Squats", "value": "20" },
-    { "name": "pushups of choice", "value": "15" },
-    { "name": "Step Ups", "value": "30" },
-    { "name": "Plank Ihs", "value": "60 s" },
-    { "name": "Burpees", "value": "10" },
-    { "name": "High Knees", "value": "70" }
-  ],
-  [
-    { "name": "Jumping Jacks", "value": "50" },
-    { "name": "Tricep Dips SO Russian Twists", "value": "10" },
-    { "name": "Pushups of Choice ", "value": "10" },
-    { "name": "Downward Dog", "value": "30" },
-    { "name": "Knee to Elbow Crunch", "value": "20" },
-    { "name": "Bird Dogs", "value": "20" },
-    { "name": "High Knees", "value": "50" }
-  ],
-  [
-    { "name": "Rest", "value": "" }
-  ],
-  [
-    { "name": "High Knees", "value": "80" },
-    { "name": "Leg Lifts each", "value": "30" },
-    { "name": "Tricep Dips", "value": "15" },
-    { "name": "Russian Twists", "value": "75" },
-    { "name": "Plle'", "value": "20" },
-    { "name": "on Hand Plank", "value": "1:00" },
-    { "name": "jumping jacks", "value": "80" }
-  ],
-  [
-    { "name": "High Knees", "value": "60" },
-    { "name": "Low Side lunges", "value": "20" },
-    { "name": "Hinge", "value": "15" },
-    { "name": "Squats", "value": "20" },
-    { "name": "Gluteal Bridges", "value": "30" },
-    { "name": "Russian Twists", "value": "60" },
-    { "name": "Pile", "value": "15" },
-    { "name": "lumping", "value": "60" }
+  "lower": [
+    [
+      { "name": "Jumping Jacks", "value": "90" },
+      { "name": "Pushups of Choice", "value": "20" },
+      { "name": "Situps", "value": "50" },
+      { "name": "Bird Dogs", "value": "30" },
+      { "name": "Walking Lunges", "value": "35" },
+      { "name": "Hinges", "value": "20" },
+      { "name": "Jumping Squats", "value": "15" },
+      { "name": "High Knees", "value": "90" }
+    ],
+    [
+      { "name": "High Knees", "value": "40" },
+      { "name": "Squats", "value": "20" },
+      { "name": "Pushups of Choice", "value": "10" },
+      { "name": "Situps", "value": "45" },
+      { "name": "Burpees", "value": "10" },
+      { "name": "Walking Lunges", "value": "25" },
+      { "name": "Step Ups", "value": "25" },
+      { "name": "Jumping Jacks", "value": "40" }
+    ],
+    [
+      { "name": "Jumping Jacks", "value": "70" },
+      { "name": "Vertical Leg Crunches", "value": "30" },
+      { "name": "Squats", "value": "20" },
+      { "name": "pushups of choice", "value": "15" },
+      { "name": "Step Ups", "value": "30" },
+      { "name": "Plank Ihs", "value": "60 s" },
+      { "name": "Burpees", "value": "10" },
+      { "name": "High Knees", "value": "70" }
+    ],
+    [
+      { "name": "Jumping Jacks", "value": "50" },
+      { "name": "Tricep Dips SO Russian Twists", "value": "10" },
+      { "name": "Pushups of Choice ", "value": "10" },
+      { "name": "Downward Dog", "value": "30" },
+      { "name": "Knee to Elbow Crunch", "value": "20" },
+      { "name": "Bird Dogs", "value": "20" },
+      { "name": "High Knees", "value": "50" }
+    ],
+    [
+      { "name": "Rest", "value": "" }
+    ],
+    [
+      { "name": "High Knees", "value": "80" },
+      { "name": "Leg Lifts each", "value": "30" },
+      { "name": "Tricep Dips", "value": "15" },
+      { "name": "Russian Twists", "value": "75" },
+      { "name": "Plle'", "value": "20" },
+      { "name": "on Hand Plank", "value": "1:00" },
+      { "name": "jumping jacks", "value": "80" }
+    ],
+    [
+      { "name": "High Knees", "value": "60" },
+      { "name": "Low Side lunges", "value": "20" },
+      { "name": "Hinge", "value": "15" },
+      { "name": "Squats", "value": "20" },
+      { "name": "Gluteal Bridges", "value": "30" },
+      { "name": "Russian Twists", "value": "60" },
+      { "name": "Pile", "value": "15" },
+      { "name": "lumping", "value": "60" }
+    ]
   ]
-]
+}

@@ -7,10 +7,34 @@ const User = require('../models/User');
 const Diet = require('../models/Diet');
 const exercisesPlan = JSON.parse(file);
 
-const exercises = function(req, res) {
+const calBMI = function(height, weight) {
+  return weight / (height / 100);
+}
+
+const getExercisePlan = function(user) {
+  let planLevel = "normal";
+  if(user.height && user.weight) {
+    const bmi = calBMI(user.height, user.weight);
+    if(bmi < 24) {
+      planLevel = "normal";
+    } else if (bmi < 29.9) {
+      planLevel = "low";
+    } else {
+      planLevel = "lower";
+    }
+  }
+  console.log("plan level", planLevel);
+  return exercisesPlan[planLevel];
+}
+
+const exercises = async function(req, res) {
+  const token = req.get('Authorization').split(' ')[1];
+  const curUserId = jwt.verify(token, config.privateKey).id;
+  const curUser = await User.findOne({ _id: curUserId });
+
   const date = req.query.date ? new Date(req.query.date) : new Date();
   const weekday = date.getDay();
-  const plans = exercisesPlan[weekday];
+  const plans = getExercisePlan(curUser)[weekday];
   res.json(RestResponse.Success(plans));
 }
 

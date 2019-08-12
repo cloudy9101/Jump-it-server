@@ -13,7 +13,7 @@ router.post('/signup', asyncHandler(signUp));
 router.post('/signin', asyncHandler(signIn));
 router.get('/find', asyncHandler(findUser));
 
-router.get('/plan/exercises', exercises);
+router.get('/plan/exercises', asyncHandler(exercises));
 router.get('/plan/diets', asyncHandler(diets));
 router.post('/plan/diets', asyncHandler(addDiet));
 
