@@ -1,0 +1,149 @@
+{
+  "lowest": [
+    [
+      { "name": "Barbell Bench Press", "value": "4 sets of 8 reps", "backgroundImg": "" },
+      { "name": "Lat-pulldowns", "value": "4 sets of 10 reps", "backgroundImg": "" },
+      { "name": "Seated Dumbbell Press", "value": "4 sets of 10 reps", "backgroundImg": "" },
+      { "name": "Leg Extensions", "value": "4 sets of 10 reps", "backgroundImg": "" },
+      { "name": "Barbell Bbicep Curls", "value": "3 sets of 10 reps", "backgroundImg": "" },
+      { "name": "Triceps Rope Pushdowns", "value": "3 sets of 15 reps", "backgroundImg": "" }
+    ],
+    [
+      { "name": "Rest", "value": "1 Day", "backgroundImg": "" }
+    ],
+    [
+      { "name": "Leg Press Machine", "value": "4 sets of 8 reps", "backgroundImg": "" },
+      { "name": "Overhead Bar Extensions", "value": "3 sets of 20 reps", "backgroundImg": "" },
+      { "name": "EZ Bar Curls", "value": "4 sets of 10 reps", "backgroundImg": "" },
+      { "name": "Machine Chest Press", "value": "4 sets of 10 reps", "backgroundImg": "" },
+      { "name": "T-Bar Row", "value": "4 sets of 10 reps", "backgroundImg": "" },
+      { "name": "Lateral Raises", "value": "3 sets of 20 reps", "backgroundImg": "" }
+    ],
+    [
+      { "name": "Rest", "value": "1 Day", "backgroundImg": "" }
+    ],
+    [
+      { "name": "EZ Bar Upright Rows", "value": "3 sets of 15 reps", "backgroundImg": "" },
+      { "name": "Close-Grip Pulldowns", "value": "4 sets of 12 reps", "backgroundImg": "" },
+      { "name": "Cable Fly", "value": "4 sets of 10 reps", "backgroundImg": "" },
+      { "name": "Lunges", "value": "3 sets of 10 reps per leg", "backgroundImg": "" },
+      { "name": "Skullcrushers", "value": "3 sets of 15 reps", "backgroundImg": "" },
+      { "name": "Hammer Curls", "value": "3 sets of 12 reps", "backgroundImg": "" }
+    ],
+    [
+      { "name": "Rest", "value": "1 Day", "backgroundImg": "" }
+    ],
+    [
+      { "name": "Barbell Bench Press", "value": "4 sets of 8 reps", "backgroundImg": "" },
+      { "name": "Lat-pulldowns", "value": "4 sets of 10 reps", "backgroundImg": "" },
+      { "name": "Seated Dumbbell Press", "value": "4 sets of 10 reps", "backgroundImg": "" },
+      { "name": "Leg Extensions", "value": "4 sets of 10 reps", "backgroundImg": "" },
+      { "name": "Barbell Bbicep Curls", "value": "3 sets of 10 reps", "backgroundImg": "" },
+      { "name": "Triceps Rope Pushdowns", "value": "3 sets of 15 reps", "backgroundImg": "" }
+    ]
+  ],
+  "lower": [
+    [
+      { "name": "Dumbbell Bench Press", "value": "3 sets of 10 reps", "backgroundImg": "" },
+      { "name": "Incline Dumbbell Bench Press", "value": "3 sets of 10 reps", "backgroundImg": "" },
+      { "name": "Chest Dip" , "value": "3 sets of MAX reps", "backgroundImg": "" },
+      { "name": "Skullcrushers", "value": "3 sets of 8-10 Reps", "backgroundImg": "" },
+      { "name": "One Arm Dumbbell Extension", "value": "3 sets of 10 reps", "backgroundImg": "" },
+      { "name": "Tricep Extension", "value": "3 sets of 10 reps", "backgroundImg": "" },
+      { "name": "Barbell Front Raise", "value": "4 sets of 12 reps", "backgroundImg": "" },
+      { "name": "Dumbbell Lateral Raise", "value": "4 sets of 8 reps", "backgroundImg": "" }
+    ],
+    [
+      { "name": "Wide Grip Pull Up", "value": "3 sets of MAX reps", "backgroundImg": "" },
+      { "name": "Lat Pull Down", "value": "3 sets of 10 reps", "backgroundImg": "" },
+      { "name": "Straight Arm Lat Pull Down", "value": "3 sets of 10 reps", "backgroundImg": "" },
+      { "name": "Machine Reverse Fly", "value": "3 sets of 10 reps", "backgroundImg": "" },
+      { "name": "Upright Row", "value": "3 sets of 8-10 reps", "backgroundImg": "" },
+      { "name": "Standing Barbell Curl", "value": "3 sets of 8-10 reps", "backgroundImg": "" },
+      { "name": "Preacher Curl", "value": "3 sets of 10 reps", "backgroundImg": "" },
+      { "name": "Incline Dumbbell Curl", "value": "3 sets of 10 reps", "backgroundImg": "" }
+    ],
+    [
+      { "name": "Rest", "value": "1 Day", "backgroundImg": "" }
+    ],
+    [
+      { "name": "Squat", "value": "4 sets of 8 reps", "backgroundImg": "" },
+      { "name": "Dumbbell Lunge", "value": "3 sets of 8 on each leg", "backgroundImg": "" },
+      { "name": "45 Degree Leg Press", "value": "3 sets of 12 reps", "backgroundImg": "" },
+      { "name": "Leg Curl", "value": "3 sets of 15 reps", "backgroundImg": "" },
+      { "name": "Leg Extension", "value": "3 sets of 15 reps", "backgroundImg": "" },
+      { "name": "Standing Calf Raise", "value": "5 sets of 8 (heavy)reps", "backgroundImg": "" },
+      { "name": "Seated Calf Raise", "value": "5 sets of 15 (light) reps", "backgroundImg": "" }
+    ],
+    [
+      { "name": "Barbell Bench Press", "value": "3 sets of 10, 10, 8 reps", "backgroundImg": "" },
+      { "name": "Dumbbell Flys", "value": "3 sets of 10 reps", "backgroundImg": "" },
+      { "name": "Cable Crossovers", "value": "3 sets of 10 reps", "backgroundImg": "" },
+      { "name": "Close Grip Bench Press", "value": "4 sets of 10, 10, 8, 6 reps", "backgroundImg": "" },
+      { "name": "Lying Dumbbell Extension", "value": "3 sets of 10 reps", "backgroundImg": "" },
+      { "name": "Tricep Kickback", "value": "3 sets of 10 reps", "backgroundImg": "" },
+      { "name": "Seated Dumbbell Press", "value": "4 sets of 10, 10, 8, 8 reps", "backgroundImg": "" },
+      { "name": "One Arm Cable Lateral Raise", "value": "3 sets of 12 reps", "backgroundImg": "" }
+    ],
+    [
+      { "name": "Rest", "value": "1 Day", "backgroundImg": "" }
+    ],
+    [
+      { "name": "Seated Row", "value": "4 sets of 10 reps", "backgroundImg": "" },
+      { "name": "Bent Over Barbell Row", "value": "3 sets of 10 reps", "backgroundImg": "" },
+      { "name": "Bent Over Row", "value": "3 sets of 12 reps", "backgroundImg": "" },
+      { "name": "Smith Machine Upright Row", "value": "3 sets of 8-10 reps", "backgroundImg": "" },
+      { "name": "Cable Curl", "value": "4 sets of 8-10 reps", "backgroundImg": "" },
+      { "name": "Concentration Curl", "value": "3 sets of 10 reps", "backgroundImg": "" },
+      { "name": "Reverse Barbell Curl", "value": "3 sets of 10 reps", "backgroundImg": "" }
+    ]
+  ],
+  "normal": [
+    [
+      { "name": "Barbell Bench Press", "value": "work up to a 5 rep max for the day", "backgroundImg": "" },
+      { "name": "Incline Dumbbell Press", "value": "3 sets of 6-8 reps", "backgroundImg": "" },
+      { "name": "Dips", "value": "3 sets of 6-10 reps", "backgroundImg": "" },
+      { "name": "Pullups", "value": "3 sets of 5-8 reps", "backgroundImg": "" },
+      { "name": "Pendlay Rows", "value": "3 sets of 6-10 reps", "backgroundImg": "" },
+      { "name": "Pulldowns", "value": "3 sets of 6-10 reps", "backgroundImg": "" }
+    ],
+    [
+      { "name": "Squats", "value": "work up to a 5 rep max for the day", "backgroundImg": "" },
+      { "name": "Leg Press", "value": "3 sets of 6-10 reps", "backgroundImg": "" },
+      { "name": "Stiff-Legged Deadlift", "value": "5 sets of 5 reps", "backgroundImg": "" },
+      { "name": "Hamstring Curls", "value": "3 sets of 6-8 reps", "backgroundImg": "" },
+      { "name": "Calf-Raise", "value": "5 sets of 10 reps", "backgroundImg": "" }
+    ],
+    [
+      { "name": "Military Press or Dumbbell Press", "value": "3 sets of 6-8", "backgroundImg": "" },
+      { "name": "Lateral Raises", "value": "5 sets of 10 reps", "backgroundImg": "" },
+      { "name": "Barbell Curls", "value": "5 sets of 6-10 reps", "backgroundImg": "" },
+      { "name": "Dumbbell Curls", "value": "3 sets of 6-10 reps", "backgroundImg": "" }
+    ],
+    [
+      { "name": "Rest", "value": "1 Day", "backgroundImg": "" }
+    ],
+    [
+      { "name": "Flat Dumbbell Press", "value": "5 sets of 20-6 (Pyramiding) reps", "backgroundImg": "" },
+      { "name": "Incline Dumbbell Press", "value": "3 sets of 6-10 reps", "backgroundImg": "" },
+      { "name": "Hammer Strength Press", "value": "3 sets of 10 reps", "backgroundImg": "" },
+      { "name": "Cable Flys", "value": "3 sets of 12-15 reps", "backgroundImg": "" },
+      { "name": "Lateral Raises", "value": "5 sets of 15-20 reps", "backgroundImg": "" },
+      { "name": "Reverse-Grip Pull-Downs", "value": "5 sets of 15-20 reps", "backgroundImg": "" }
+    ],
+    [
+      { "name": "Barbell Rows", "value": "5 sets of 20-8 (Pyramiding) reps", "backgroundImg": "" },
+      { "name": "Barbell Shrugs", "value": "3 sets of 15-20 reps", "backgroundImg": "" },
+      { "name": "Rack Deadlifts", "value": "3 sets of 10-12 reps", "backgroundImg": "" },
+      { "name": "Pullups", "value": "3 sets of 6-10 reps", "backgroundImg": "" },
+      { "name": "Pulldowns", "value": "3 sets of 6-10 reps", "backgroundImg": "" }
+    ],
+    [
+      { "name": "Front Squats", "value": "5 sets of 20-8 (Pyramiding) reps", "backgroundImg": "" },
+      { "name": "Leg Extensions", "value": "5 sets of 10 reps", "backgroundImg": "" },
+      { "name": "Hamstring Curls", "value": "5 sets of 6-10 reps", "backgroundImg": "" },
+      { "name": "Seated Calf Raise", "value": "5 sets of 6-10 reps", "backgroundImg": "" },
+      { "name": "Standing Calf Raise", "value": "3 sets of 8-12 reps", "backgroundImg": "" }
+    ]
+  ]
+}
