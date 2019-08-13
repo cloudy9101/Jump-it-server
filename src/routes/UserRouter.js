@@ -4,7 +4,8 @@ const {
   signUp,
   signIn,
   findUser,
-  changePassword
+  changePassword,
+  updateUser
 } = require('../controllers/users');
 const { exercises, diets, addDiet } = require('../controllers/plan');
 const { foods, updateFood, addFood, deleteFood } = require('../controllers/foods');
@@ -18,6 +19,7 @@ router.post('/signup', asyncHandler(signUp));
 router.post('/signin', asyncHandler(signIn));
 router.get('/find', asyncHandler(findUser));
 router.put('/password', asyncHandler(changePassword));
+router.put('/update', asyncHandler(updateUser));
 
 router.get('/plan/exercises', asyncHandler(exercises));
 router.get('/plan/diets', asyncHandler(diets));
