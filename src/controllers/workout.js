@@ -13,10 +13,7 @@ const save = async (req, res) => {
   const curUserId = jwt.verify(token, config.privateKey).id;
   const data = req.body;
   const { timestamp } = data;
-  // console.log(timestamp);
-  // console.log(new Date(timestamp).getDate());
   await saveData(data, curUserId);
-
   res.json(RestResponse.Success('Success..'));
 };
 async function saveData(data, id) {
