@@ -8,7 +8,13 @@ const {
   updateUser
 } = require('../controllers/users');
 const { exercises, diets, addDiet } = require('../controllers/plan');
-const { foods, updateFood, addFood, deleteFood } = require('../controllers/foods');
+const {
+  foods,
+  updateFood,
+  addFood,
+  deleteFood
+} = require('../controllers/foods');
+const { save } = require('../controllers/workout');
 const asyncHandler = require('../utils/asyncHandler');
 
 router.get('/test', (req, res) => {
@@ -24,7 +30,10 @@ router.put('/update', asyncHandler(updateUser));
 router.get('/plan/exercises', asyncHandler(exercises));
 router.get('/plan/diets', asyncHandler(diets));
 router.post('/plan/diets', asyncHandler(addDiet));
+//workout
+router.post('/workout/save', asyncHandler(save));
 
+//food
 router.get('/foods', asyncHandler(foods));
 router.put('/foods/:id', asyncHandler(updateFood));
 router.post('/foods', asyncHandler(addFood));
