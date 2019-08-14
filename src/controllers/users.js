@@ -85,6 +85,10 @@ const findUser = async function(req, res) {
 
 const changePassword = async function(req, res) {
   const curUserId = getCurUserId(req);
+
+  const token = req.get('Authorization').split(' ')[1];
+  const curUserId = jwt.verify(token, config.privateKey).id;
+
   const curUser = await User.findOne({ _id: curUserId });
   let { password, newPassword } = req.body;
   const match = await bcrypt.compare(password, curUser.password);
@@ -126,10 +130,12 @@ getCurUserId = req => {
   const token = req.get('Authorization').split(' ')[1];
   return jwt.verify(token, config.privateKey).id;
 };
+
 module.exports = {
   signUp,
   signIn,
   findUser,
+
   changePassword,
   updateUser
 };

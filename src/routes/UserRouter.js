@@ -25,6 +25,7 @@ router.post('/signup', asyncHandler(signUp));
 router.post('/signin', asyncHandler(signIn));
 router.get('/find', asyncHandler(findUser));
 router.put('/password', asyncHandler(changePassword));
+
 router.put('/update', asyncHandler(updateUser));
 
 router.get('/plan/exercises', asyncHandler(exercises));

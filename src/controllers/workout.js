@@ -12,46 +12,67 @@ const save = async (req, res) => {
   const token = req.get('Authorization').split(' ')[1];
   const curUserId = jwt.verify(token, config.privateKey).id;
   const data = req.body;
-
+  const { timestamp } = data;
+  // console.log(timestamp);
+  // console.log(new Date(timestamp).getDate());
   await saveData(data, curUserId);
 
   res.json(RestResponse.Success('Success..'));
 };
-function saveData(data, id) {
+async function saveData(data, id) {
   const keys = Object.keys(data);
   switch (keys[0]) {
     case 'step': {
-      const { step } = data;
+      const { step, timestamp } = data;
+      const obj = await StepCount.findOne({ userId: id });
+      if (obj) {
+        if (isToday(timestamp, obj.date)) {
+          await obj.deleteOne();
+        }
+      }
+
       const newStep = new StepCount({
         userId: id,
         value: step.value,
-        startDate: _parseDate(step.startDate),
-        endDate: _parseDate(step.startDate),
-        date: _parseDate(new Date())
+        startDate: Date.parse(step.startDate),
+        endDate: Date.parse(step.startDate),
+        date: timestamp
       });
       newStep.save();
       break;
     }
     case 'distance': {
-      const { distance } = data;
+      const { distance, timestamp } = data;
+      const obj = await Distance.findOne({ userId: id });
+      if (obj) {
+        if (isToday(timestamp, obj.date)) {
+          await obj.deleteOne();
+        }
+      }
       const newDistance = new Distance({
         userId: id,
         value: distance.value,
-        startDate: _parseDate(distance.startDate),
-        endDate: _parseDate(distance.startDate),
-        date: _parseDate(new Date())
+        startDate: Date.parse(distance.startDate),
+        endDate: Date.parse(distance.startDate),
+        date: timestamp
       });
       newDistance.save();
       break;
     }
     case 'floor': {
-      const { floor } = data;
+      const { floor, timestamp } = data;
+      const obj = await Floor.findOne({ userId: id });
+      if (obj) {
+        if (isToday(timestamp, obj.date)) {
+          await obj.deleteOne();
+        }
+      }
       const newfloor = new Floor({
         userId: id,
         value: floor.value,
-        startDate: _parseDate(floor.startDate),
-        endDate: _parseDate(floor.startDate),
-        date: _parseDate(new Date())
+        startDate: Date.parse(floor.startDate),
+        endDate: Date.parse(floor.startDate),
+        date: timestamp
       });
       newfloor.save();
       break;
@@ -60,12 +81,7 @@ function saveData(data, id) {
       break;
   }
 }
-function createAndGetUser(obj) {
-  return;
+function isToday(today, past) {
+  return new Date(today).getDate() == new Date(parseInt(past)).getDate();
 }
-
-function _parseDate(str) {
-  return Date.parse(moment(str, 'DD-MM-YYYY').toDate());
-}
-
 module.exports = { save };
