@@ -32,10 +32,12 @@ const Firebase = {
     };
   */
   notify: async function(user, msg) {
-    const fcmTokens = await FcmToken.find({ userId: user.id });
+    const fcmTokens = await FcmToken.find({ userId: user._id });
     const tokens = fcmTokens.map((fcmToken) => {
       return fcmToken.token;
     });
+    if(tokens.length === 0) { return; }
+
     msg.tokens = _.uniq(tokens);
 
     let response;
