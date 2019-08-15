@@ -8,7 +8,8 @@ const {
   updateUser,
   updateNotificationEnabled,
   forgetPassword,
-  deviceReg
+  deviceReg,
+  deviceUnreg
 } = require('../controllers/users');
 const { exercises, diets, addDiet } = require('../controllers/plan');
 const {
@@ -42,6 +43,7 @@ router.put('/update', asyncHandler(updateUser));
 router.put('/updateNotificationEnabled', asyncHandler(updateNotificationEnabled));
 router.post('/send', asyncHandler(forgetPassword));
 router.post('/deviceReg', asyncHandler(deviceReg));
+router.post('/deviceUnreg', asyncHandler(deviceUnreg));
 
 router.get('/plan/exercises', asyncHandler(exercises));
 router.get('/plan/diets', asyncHandler(diets));
