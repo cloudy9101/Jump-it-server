@@ -15,7 +15,11 @@ const {
   deleteFood
 } = require('../controllers/foods');
 const { save } = require('../controllers/workout');
-const { saveHighblood } = require('../controllers/measure');
+const {
+  saveMeasure,
+  readHighBlood,
+  readSugar
+} = require('../controllers/measure');
 
 const asyncHandler = require('../utils/asyncHandler');
 
@@ -36,8 +40,9 @@ router.post('/plan/diets', asyncHandler(addDiet));
 //workout
 router.post('/workout/save', asyncHandler(save));
 //measure
-
-router.post('/measure/save', asyncHandler(saveHighblood));
+router.post('/measure/save', asyncHandler(saveMeasure));
+router.get('/measure/highblood/:date/:type', asyncHandler(readHighBlood));
+router.get('/measure/sugar/:date/:type', asyncHandler(readSugar));
 //food
 router.get('/foods', asyncHandler(foods));
 router.put('/foods/:id', asyncHandler(updateFood));

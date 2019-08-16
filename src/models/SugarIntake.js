@@ -5,7 +5,7 @@ const SugarIntakeSchema = new Schema(
   {
     userId: { type: String, require: true },
     value: { type: String, require: true },
-    timestamp: { type: String, require: true }
+    date: { type: Date, require: true }
   },
   { versionKey: false }
 );

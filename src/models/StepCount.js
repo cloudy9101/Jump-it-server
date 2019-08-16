@@ -7,7 +7,7 @@ const StepCountSchema = new Schema(
     value: { type: Number, require: true },
     startDate: { type: String, require: true },
     endDate: { type: String, require: true },
-    date: { type: String, require: true }
+    date: { type: Date, require: true }
   },
   { versionKey: false }
 );
