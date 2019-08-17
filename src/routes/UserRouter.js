@@ -18,7 +18,10 @@ const { save } = require('../controllers/workout');
 const {
   saveMeasure,
   readHighBlood,
-  readSugar
+  readSugar,
+  readStepCount,
+  readDistance,
+  readFloors
 } = require('../controllers/measure');
 
 const asyncHandler = require('../utils/asyncHandler');
@@ -43,6 +46,9 @@ router.post('/workout/save', asyncHandler(save));
 router.post('/measure/save', asyncHandler(saveMeasure));
 router.get('/measure/highblood/:date/:type', asyncHandler(readHighBlood));
 router.get('/measure/sugar/:date/:type', asyncHandler(readSugar));
+router.get('/measure/step/:date/:type', asyncHandler(readStepCount));
+router.get('/measure/distance/:date/:type', asyncHandler(readDistance));
+router.get('/measure/floor/:date/:type', asyncHandler(readFloors));
 //food
 router.get('/foods', asyncHandler(foods));
 router.put('/foods/:id', asyncHandler(updateFood));

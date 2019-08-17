@@ -5,6 +5,9 @@ const moment = require('moment');
 const config = require('../config');
 const HighBlood = require('../models/HighBlood');
 const SugarIntake = require('../models/SugarIntake');
+const StepCount = require('../models/StepCount');
+const Distance = require('../models/Distance');
+const Floor = require('../models/Floor');
 
 const saveMeasure = async (req, res) => {
   const token = req.get('Authorization').split(' ')[1];
@@ -39,7 +42,7 @@ const saveMeasure = async (req, res) => {
   } else {
     const curlow = getLow(low, resultOfHighBlood.low);
     const curhigh = getHigh(high, resultOfHighBlood.high);
-    const curSugar = getSugar(value, resultOfSugar, value);
+    const curSugar = getSugar(value, resultOfSugar.value);
 
     await HighBlood.updateOne(
       { userId: curUserId, date: today },
@@ -66,21 +69,20 @@ const readHighBlood = async (req, res) => {
   const result = await HighBlood.find(
     {
       userId: curUserId,
-      date: { $lte: last, $gte: first }
+      date: {
+        $lte: last,
+        $gte: first
+      }
     },
     { userId: false, _id: false } //
   );
   if (!result) {
     throw new NotFound('Data not found');
   }
-  const labels = getLabels(type);
 
+  const labels = getLabels(type, dateArr);
   let low = [];
   let high = [];
-  // moment(dateArr[0])
-  // .endOf('month')
-  // .get('date')
-
   dateArr.forEach(d => {
     let flag = true;
     result.forEach(v => {
@@ -116,6 +118,7 @@ function getDateQueryInfo(type, date) {
     case 'WEEK': {
       const first = moment(date, 'DD-MM-YYYY')
         .startOf('week')
+        .add(1, 'd')
         .toDate();
       const last = moment(date, 'DD-MM-YYYY')
         .endOf('week')
@@ -133,6 +136,7 @@ function getDateQueryInfo(type, date) {
     case 'MONTH': {
       const first = moment(date, 'DD-MM-YYYY')
         .startOf('month')
+        .add(1, 'd')
         .toDate();
       const last = moment(date, 'DD-MM-YYYY')
         .endOf('month')
@@ -153,10 +157,20 @@ function getDateQueryInfo(type, date) {
     case 'YEAR': {
       const first = moment(date, 'DD-MM-YYYY')
         .startOf('year')
+        .add(1, 'd')
         .toDate();
       const last = moment(date, 'DD-MM-YYYY')
         .endOf('year')
         .toDate();
+      let length = moment(date, 'DD-MM-YYYY').isLeapYear() ? 366 : 365;
+      dateArr.push(first);
+      for (let i = 1; i < length; i++) {
+        dateArr.push(
+          moment(first)
+            .add(i, 'd')
+            .toDate()
+        );
+      }
 
       return { first, last, dateArr };
     }
@@ -168,12 +182,14 @@ const readSugar = async (req, res) => {
   const curUserId = jwt.verify(token, config.privateKey).id;
   const { date, type } = req.params;
 
-  const labels = getLabels(type);
   const { first, last, dateArr } = getDateQueryInfo(type, date);
   const result = await SugarIntake.find(
     {
       userId: curUserId,
-      date: { $lte: last, $gte: first }
+      date: {
+        $lte: last,
+        $gte: first
+      }
     },
     { userId: false, _id: false } //
   );
@@ -181,6 +197,7 @@ const readSugar = async (req, res) => {
   if (!result) {
     throw new NotFound('Data not found');
   }
+  const labels = getLabels(type, dateArr);
   let data = [];
   dateArr.forEach(d => {
     let flag = true;
@@ -202,12 +219,154 @@ const readSugar = async (req, res) => {
     })
   );
 };
-function getLabels(type) {
+const readStepCount = async (req, res) => {
+  const token = req.get('Authorization').split(' ')[1];
+  const curUserId = jwt.verify(token, config.privateKey).id;
+  const { date, type } = req.params;
+  const { first, last, dateArr } = getDateQueryInfo(type, date);
+
+  const result = await StepCount.find(
+    {
+      userId: curUserId,
+      endDate: {
+        $lte: last,
+        $gte: first
+      }
+    },
+    { userId: false, _id: false }
+  );
+
+  if (!result) {
+    throw new NotFound('Data not found');
+  }
+  const labels = getLabels(type, dateArr);
+  let data = [];
+  dateArr.forEach(d => {
+    let flag = true;
+    result.forEach(v => {
+      if (
+        d.getDate() === v.endDate.getDate() &&
+        d.getMonth() === v.endDate.getMonth()
+      ) {
+        data.push(v.value);
+        flag = false;
+      }
+    });
+    if (flag) {
+      data.push(0);
+    }
+  });
+
+  res.json(
+    RestResponse.Success({
+      labels,
+      datasets: [{ data }]
+    })
+  );
+};
+const readFloors = async (req, res) => {
+  const token = req.get('Authorization').split(' ')[1];
+  const curUserId = jwt.verify(token, config.privateKey).id;
+  const { date, type } = req.params;
+  const { first, last, dateArr } = getDateQueryInfo(type, date);
+
+  const result = await Floor.find(
+    {
+      userId: curUserId,
+      endDate: {
+        $lte: last,
+        $gte: first
+      }
+    },
+    { userId: false, _id: false }
+  );
+
+  if (!result) {
+    throw new NotFound('Data not found');
+  }
+  const labels = getLabels(type, dateArr);
+
+  let data = [];
+  dateArr.forEach(d => {
+    let flag = true;
+    result.forEach(v => {
+      if (
+        d.getDate() === v.endDate.getDate() &&
+        d.getMonth() === v.endDate.getMonth()
+      ) {
+        data.push(v.value);
+        flag = false;
+      }
+    });
+    if (flag) {
+      data.push(0);
+    }
+  });
+
+  res.json(
+    RestResponse.Success({
+      labels,
+      datasets: [{ data }]
+    })
+  );
+};
+const readDistance = async (req, res) => {
+  const token = req.get('Authorization').split(' ')[1];
+  const curUserId = jwt.verify(token, config.privateKey).id;
+  const { date, type } = req.params;
+  const { first, last, dateArr } = getDateQueryInfo(type, date);
+
+  const result = await Distance.find(
+    {
+      userId: curUserId,
+      endDate: {
+        $lte: last,
+        $gte: first
+      }
+    },
+    { userId: false, _id: false }
+  );
+
+  if (!result) {
+    throw new NotFound('Data not found');
+  }
+  const labels = getLabels(type, dateArr);
+
+  let data = [];
+  dateArr.forEach(d => {
+    let flag = true;
+    result.forEach(v => {
+      if (
+        d.getDate() === v.endDate.getDate() &&
+        d.getMonth() === v.endDate.getMonth()
+      ) {
+        data.push(Math.round(v.value));
+        flag = false;
+      }
+    });
+    if (flag) {
+      data.push(0);
+    }
+  });
+
+  res.json(
+    RestResponse.Success({
+      labels,
+      datasets: [{ data }]
+    })
+  );
+};
+function getLabels(type, arr) {
   switch (type.toUpperCase()) {
     case 'WEEK':
       return ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
     case 'MONTH':
-      return [1, 6, 11, 16, 21, 26, 30];
+      if (arr.length === 30) {
+        return [1, 4, 7, 10, 13, 16, 19, 21, 24, 27, 30];
+      } else {
+        return [1, 4, 7, 10, 13, 16, 19, 21, 24, 27, 31];
+      }
+
     case 'YEAR':
       return [
         'Jan',
@@ -236,4 +395,11 @@ function getLow(curLow, preLow) {
 function getHigh(curHigh, preHigh) {
   return parseInt(curHigh) <= parseInt(preHigh) ? preHigh : curHigh;
 }
-module.exports = { saveMeasure, readHighBlood, readSugar };
+module.exports = {
+  saveMeasure,
+  readHighBlood,
+  readSugar,
+  readStepCount,
+  readFloors,
+  readDistance
+};

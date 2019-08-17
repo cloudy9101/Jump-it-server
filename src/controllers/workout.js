@@ -12,7 +12,7 @@ const save = async (req, res) => {
   const token = req.get('Authorization').split(' ')[1];
   const curUserId = jwt.verify(token, config.privateKey).id;
   const data = req.body;
-  const { timestamp } = data;
+  const { date } = data;
   await saveData(data, curUserId);
   res.json(RestResponse.Success('Success..'));
 };
@@ -20,56 +20,62 @@ async function saveData(data, id) {
   const keys = Object.keys(data);
   switch (keys[0]) {
     case 'step': {
-      const { step, timestamp } = data;
-      const obj = await StepCount.findOne({ userId: id });
+      const { step, date } = data;
+      const obj = await StepCount.findOne({
+        userId: id,
+        endDate: step.endDate
+      });
       if (obj) {
-        if (isToday(timestamp, obj.date)) {
-          await obj.deleteOne();
+        if (isExit(step.endDate, obj.endDate)) {
+          await obj.deleteOne({ userId: obj.id });
         }
       }
 
       const newStep = new StepCount({
         userId: id,
         value: step.value,
-        startDate: Date.parse(step.startDate),
-        endDate: Date.parse(step.startDate),
-        date: timestamp
+        startDate: moment(step.startDate).toDate(),
+        endDate: moment(step.endDate).toDate(),
+        date: moment(date).toDate()
       });
       newStep.save();
       break;
     }
     case 'distance': {
-      const { distance, timestamp } = data;
-      const obj = await Distance.findOne({ userId: id });
+      const { distance, date } = data;
+      const obj = await Distance.findOne({
+        userId: id,
+        endDate: distance.endDate
+      });
       if (obj) {
-        if (isToday(timestamp, obj.date)) {
-          await obj.deleteOne();
+        if (isExit(distance.endDate, obj.endDate)) {
+          await obj.deleteOne({ userId: obj.id });
         }
       }
       const newDistance = new Distance({
         userId: id,
         value: distance.value,
-        startDate: Date.parse(distance.startDate),
-        endDate: Date.parse(distance.startDate),
-        date: timestamp
+        startDate: moment(distance.startDate).toDate(),
+        endDate: moment(distance.endDate).toDate(),
+        date: moment(date).toDate()
       });
       newDistance.save();
       break;
     }
     case 'floor': {
-      const { floor, timestamp } = data;
-      const obj = await Floor.findOne({ userId: id });
+      const { floor, date } = data;
+      const obj = await Floor.findOne({ userId: id, endDate: floor.endDate });
       if (obj) {
-        if (isToday(timestamp, obj.date)) {
-          await obj.deleteOne();
+        if (isExit(floor.endDate, obj.endDate)) {
+          await obj.deleteOne({ userId: obj.id });
         }
       }
       const newfloor = new Floor({
         userId: id,
         value: floor.value,
-        startDate: Date.parse(floor.startDate),
-        endDate: Date.parse(floor.startDate),
-        date: timestamp
+        startDate: moment(floor.startDate).toDate(),
+        endDate: moment(floor.endDate).toDate(),
+        date: moment(date).toDate()
       });
       newfloor.save();
       break;
@@ -78,7 +84,15 @@ async function saveData(data, id) {
       break;
   }
 }
-function isToday(today, past) {
-  return new Date(today).getDate() == new Date(parseInt(past)).getDate();
+function isExit(today, past) {
+  return (
+    moment(today)
+      .toDate()
+      .getTime() >=
+    moment(today)
+      .toDate()
+      .getTime()
+  );
 }
+
 module.exports = { save };

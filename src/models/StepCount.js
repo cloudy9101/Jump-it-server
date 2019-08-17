@@ -5,8 +5,8 @@ const StepCountSchema = new Schema(
   {
     userId: { type: String, require: true },
     value: { type: Number, require: true },
-    startDate: { type: String, require: true },
-    endDate: { type: String, require: true },
+    startDate: { type: Date, require: true },
+    endDate: { type: Date, require: true },
     date: { type: Date, require: true }
   },
   { versionKey: false }
