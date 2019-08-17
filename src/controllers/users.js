@@ -74,19 +74,68 @@ const signIn = async function(req, res) {
 };
 
 const findUser = async function(req, res) {
-  console.log(req.get('Authorization').split(' '));
-  const token = req.get('Authorization').split(' ')[1];
-
-  const curUserId = jwt.verify(token, config.privateKey).id;
+  const curUserId = getCurUserId(req);
 
   const curUser = await User.findOne(
     { _id: curUserId },
-    { password: false, _id: false }
+    { password: false, _id: false, birthday: false, gender: false }
   );
   res.json(RestResponse.Success(curUser));
 };
+
+const changePassword = async function(req, res) {
+  const curUserId = getCurUserId(req);
+
+  const token = req.get('Authorization').split(' ')[1];
+  const curUserId = jwt.verify(token, config.privateKey).id;
+
+  const curUser = await User.findOne({ _id: curUserId });
+  let { password, newPassword } = req.body;
+  const match = await bcrypt.compare(password, curUser.password);
+
+  if (match) {
+    bcrypt.genSalt(10, function(err, salt) {
+      bcrypt.hash(newPassword, salt, async function(err, hash) {
+        newPassword = hash;
+        const result = await User.updateOne(
+          { _id: curUserId },
+          { password: newPassword }
+        );
+
+        if (result) res.json(RestResponse.Success('Success..'));
+      });
+    });
+  } else {
+    throw new PermissionDeny('Password Incorrect..');
+  }
+};
+
+const updateUser = async (req, res) => {
+  const curUserId = getCurUserId(req);
+
+  const { avator, username, firstName, lastName, height, weight } = req.body;
+
+  const curUser = await User.findOne({ _id: curUserId });
+  const result = await User.updateOne(
+    { _id: curUserId },
+    { avator, username, firstName, lastName, height, weight }
+  );
+  if (result) {
+    const user = await User.findOne({ _id: curUserId });
+    res.json(RestResponse.Success(user));
+  }
+};
+
+getCurUserId = req => {
+  const token = req.get('Authorization').split(' ')[1];
+  return jwt.verify(token, config.privateKey).id;
+};
+
 module.exports = {
   signUp,
   signIn,
-  findUser
+  findUser,
+
+  changePassword,
+  updateUser
 };
