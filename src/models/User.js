@@ -12,7 +12,8 @@ const UserSchama = new Schema(
     gender: { type: Number, require: true }, // 1 as male 0 as female
     birthday: { type: String, require: true },
     height: { type: Number, require: true },
-    weight: { type: Number, require: true }
+    weight: { type: Number, require: true },
+    notificationEnabled: { type: Boolean, require: true, default: true }
   },
   { versionKey: false }
 );

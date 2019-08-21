@@ -5,7 +5,8 @@ const {
   signIn,
   findUser,
   changePassword,
-  updateUser
+  updateUser,
+  updateNotificationEnabled
 } = require('../controllers/users');
 const { exercises, diets, addDiet } = require('../controllers/plan');
 const {
@@ -36,6 +37,7 @@ router.post('/signin', asyncHandler(signIn));
 router.get('/find', asyncHandler(findUser));
 router.put('/password', asyncHandler(changePassword));
 router.put('/update', asyncHandler(updateUser));
+router.put('/updateNotificationEnabled', asyncHandler(updateNotificationEnabled));
 
 router.get('/plan/exercises', asyncHandler(exercises));
 router.get('/plan/diets', asyncHandler(diets));

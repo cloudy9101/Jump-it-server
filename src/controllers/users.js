@@ -86,9 +86,6 @@ const findUser = async function(req, res) {
 const changePassword = async function(req, res) {
   const curUserId = getCurUserId(req);
 
-  const token = req.get('Authorization').split(' ')[1];
-  const curUserId = jwt.verify(token, config.privateKey).id;
-
   const curUser = await User.findOne({ _id: curUserId });
   let { password, newPassword } = req.body;
   const match = await bcrypt.compare(password, curUser.password);
@@ -126,6 +123,21 @@ const updateUser = async (req, res) => {
   }
 };
 
+const updateNotificationEnabled = async(req, res) => {
+  const curUserId = getCurUserId(req);
+
+  const { notificationEnabled } = req.body;
+
+  const result = await User.updateOne(
+    { _id: curUserId },
+    { notificationEnabled }
+  );
+  if (result) {
+    const user = await User.findOne({ _id: curUserId });
+    res.json(RestResponse.Success(user));
+  }
+};
+
 getCurUserId = req => {
   const token = req.get('Authorization').split(' ')[1];
   return jwt.verify(token, config.privateKey).id;
@@ -137,5 +149,6 @@ module.exports = {
   findUser,
 
   changePassword,
-  updateUser
+  updateUser,
+  updateNotificationEnabled
 };
