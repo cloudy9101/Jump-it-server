@@ -2,6 +2,7 @@ const bcrypt = require('bcrypt');
 const User = require('../models/User');
 const RestResponse = require('../utils/RestResponse');
 const jwt = require('jsonwebtoken');
+const nodemailer = require('nodemailer');
 const config = require('../config');
 const {
   NotFound,
@@ -143,11 +144,33 @@ getCurUserId = req => {
   return jwt.verify(token, config.privateKey).id;
 };
 
+const forgetPassword = async (req, res) => {
+  const { email } = req.body;
+
+  const code = Math.floor(100000 + Math.random() * 900000);
+
+  let transporter = nodemailer.createTransport({
+    host: 'smtp.gmail.com',
+    port: 587,
+    secure: false,
+    auth: {
+      user: config.user,
+      pass: config.password
+    }
+  });
+  let info = await transporter.sendMail({
+    from: '"Jump-It"',
+    to: email,
+    subject: 'Change Password',
+    html: `<b>Your verification code is ${code}</b>`
+  });
+  res.json(RestResponse.Success(code));
+};
 module.exports = {
   signUp,
   signIn,
   findUser,
-
+  forgetPassword,
   changePassword,
   updateUser,
   updateNotificationEnabled

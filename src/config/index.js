@@ -5,5 +5,7 @@ module.exports = {
   db: {
     mongoUrl: 'mongodb://localhost:27017/jumpit'
   },
-  privateKey: 'you can change to whatever you like'
+  privateKey: 'you can change to whatever you like',
+  user: 'liuweltec2000@gmail.com',
+  password: 'l8036316'
 };

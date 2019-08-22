@@ -1,6 +1,7 @@
 const bcrypt = require('bcrypt');
 const RestResponse = require('../utils/RestResponse');
 const jwt = require('jsonwebtoken');
+const nodemailer = require('nodemailer');
 const moment = require('moment');
 const config = require('../config');
 const HighBlood = require('../models/HighBlood');
