@@ -6,7 +6,9 @@ const {
   findUser,
   changePassword,
   updateUser,
-  updateNotificationEnabled
+  updateNotificationEnabled,
+  forgetPassword
+
 } = require('../controllers/users');
 const { exercises, diets, addDiet } = require('../controllers/plan');
 const {
@@ -37,7 +39,11 @@ router.post('/signin', asyncHandler(signIn));
 router.get('/find', asyncHandler(findUser));
 router.put('/password', asyncHandler(changePassword));
 router.put('/update', asyncHandler(updateUser));
+<<<<<<< HEAD
 router.put('/updateNotificationEnabled', asyncHandler(updateNotificationEnabled));
+=======
+router.post('/send', asyncHandler(forgetPassword));
+>>>>>>> email api done
 
 router.get('/plan/exercises', asyncHandler(exercises));
 router.get('/plan/diets', asyncHandler(diets));

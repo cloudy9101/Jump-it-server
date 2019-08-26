@@ -2,6 +2,7 @@ const bcrypt = require('bcrypt');
 const User = require('../models/User');
 const RestResponse = require('../utils/RestResponse');
 const jwt = require('jsonwebtoken');
+const nodemailer = require('nodemailer');
 const config = require('../config');
 const {
   NotFound,
@@ -84,26 +85,43 @@ const findUser = async function(req, res) {
 };
 
 const changePassword = async function(req, res) {
-  const curUserId = getCurUserId(req);
+  let { password, newPassword, email } = req.body;
 
-  const curUser = await User.findOne({ _id: curUserId });
-  let { password, newPassword } = req.body;
-  const match = await bcrypt.compare(password, curUser.password);
-
-  if (match) {
-    bcrypt.genSalt(10, function(err, salt) {
-      bcrypt.hash(newPassword, salt, async function(err, hash) {
-        newPassword = hash;
-        const result = await User.updateOne(
-          { _id: curUserId },
-          { password: newPassword }
-        );
-
-        if (result) res.json(RestResponse.Success('Success..'));
+  if (password === undefined) {
+    console.log(email, password, newPassword);
+    const user = await User.findOne({ email });
+    if (user) {
+      bcrypt.genSalt(10, function(err, salt) {
+        bcrypt.hash(newPassword, salt, async function(err, hash) {
+          newPassword = hash;
+          const result = await User.updateOne(
+            { _id: user_id },
+            { password: newPassword }
+          );
+          if (result) res.json(RestResponse.Success('Success..'));
+        });
       });
-    });
+    }
+    console.log('no  .....');
   } else {
-    throw new PermissionDeny('Password Incorrect..');
+    const curUserId = getCurUserId(req);
+    const curUser = await User.findOne({ _id: curUserId });
+    const match = await bcrypt.compare(password, curUser.password);
+    if (match) {
+      bcrypt.genSalt(10, function(err, salt) {
+        bcrypt.hash(newPassword, salt, async function(err, hash) {
+          newPassword = hash;
+          const result = await User.updateOne(
+            { _id: curUserId },
+            { password: newPassword }
+          );
+
+          if (result) res.json(RestResponse.Success('Success..'));
+        });
+      });
+    } else {
+      throw new PermissionDeny('Password Incorrect..');
+    }
   }
 };
 
@@ -143,11 +161,33 @@ getCurUserId = req => {
   return jwt.verify(token, config.privateKey).id;
 };
 
+const forgetPassword = async (req, res) => {
+  const { email } = req.body;
+
+  const code = Math.floor(100000 + Math.random() * 900000);
+
+  let transporter = nodemailer.createTransport({
+    host: 'smtp.gmail.com',
+    port: 587,
+    secure: false,
+    auth: {
+      user: config.user,
+      pass: config.password
+    }
+  });
+  let info = await transporter.sendMail({
+    from: '"Jump-It"',
+    to: email,
+    subject: 'Change Password',
+    html: `<b>Your verification code is ${code}</b>`
+  });
+  res.json(RestResponse.Success({ code, email }));
+};
 module.exports = {
   signUp,
   signIn,
   findUser,
-
+  forgetPassword,
   changePassword,
   updateUser,
   updateNotificationEnabled
