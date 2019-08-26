@@ -1,6 +1,8 @@
 const bcrypt = require('bcrypt');
 const User = require('../models/User');
+const FcmToken = require('../models/FcmToken');
 const RestResponse = require('../utils/RestResponse');
+const Firebase = require('../utils/FirebaseUtil');
 const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
 const config = require('../config');
@@ -183,6 +185,40 @@ const forgetPassword = async (req, res) => {
   });
   res.json(RestResponse.Success({ code, email }));
 };
+
+const deviceReg = async function(req, res) {
+  const token = req.get('Authorization').split(' ')[1];
+  const { deviceId, regToken } = req.body;
+
+  const curUserId = jwt.verify(token, config.privateKey).id;
+  const curUser = await User.findOne({ _id: curUserId });
+  if (!curUser) throw new NotFound('User not found');
+
+  let fcmToken = await FcmToken.findOne({ userId: curUser._id, deviceId });
+  if(fcmToken) {
+    fcmToken.token = regToken;
+    await fcmToken.save();
+  } else {
+    fcmToken = new FcmToken({ userId: curUser._id, deviceId, token: regToken })
+    await fcmToken.save();
+  }
+
+  res.json(RestResponse.Success(fcmToken.userId));
+}
+
+const deviceUnreg = async function(req, res) {
+  const token = req.get('Authorization').split(' ')[1];
+  const { deviceId } = req.body;
+
+  const curUserId = jwt.verify(token, config.privateKey).id;
+  const curUser = await User.findOne({ _id: curUserId });
+  if (!curUser) throw new NotFound('User not found');
+
+  await FcmToken.deleteMany({ userId: curUser._id, deviceId });
+
+  res.json(RestResponse.Success());
+}
+
 module.exports = {
   signUp,
   signIn,
@@ -190,5 +226,7 @@ module.exports = {
   forgetPassword,
   changePassword,
   updateUser,
-  updateNotificationEnabled
+  updateNotificationEnabled,
+  deviceReg,
+  deviceUnreg
 };

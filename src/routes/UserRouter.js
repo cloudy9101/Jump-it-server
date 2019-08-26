@@ -7,8 +7,9 @@ const {
   changePassword,
   updateUser,
   updateNotificationEnabled,
-  forgetPassword
-
+  forgetPassword,
+  deviceReg,
+  deviceUnreg
 } = require('../controllers/users');
 const { exercises, diets, addDiet } = require('../controllers/plan');
 const {
@@ -29,7 +30,7 @@ const {
 
 const asyncHandler = require('../utils/asyncHandler');
 
-router.get('/test', (req, res) => {
+router.get('/test', async (req, res) => {
   // throw new PermissionDeny("User denied");
 });
 
@@ -39,11 +40,10 @@ router.post('/signin', asyncHandler(signIn));
 router.get('/find', asyncHandler(findUser));
 router.put('/password', asyncHandler(changePassword));
 router.put('/update', asyncHandler(updateUser));
-<<<<<<< HEAD
 router.put('/updateNotificationEnabled', asyncHandler(updateNotificationEnabled));
-=======
 router.post('/send', asyncHandler(forgetPassword));
->>>>>>> email api done
+router.post('/deviceReg', asyncHandler(deviceReg));
+router.post('/deviceUnreg', asyncHandler(deviceUnreg));
 
 router.get('/plan/exercises', asyncHandler(exercises));
 router.get('/plan/diets', asyncHandler(diets));

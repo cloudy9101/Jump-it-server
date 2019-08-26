@@ -1,3 +1,7 @@
+# User defined
+### Firebase admin sdk credential
+src/config/jump-it-firebase-adminsdk-credential.json
+
 # Logs
 logs
 *.log

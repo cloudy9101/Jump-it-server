@@ -7,6 +7,8 @@ const mongoose = require('mongoose');
 const config = require('./src/config');
 const { errorHandler } = require('./src/middleWare/errorHandler');
 
+require('./src/utils/AgendaUtil');
+
 mongoose
   .connect(config.db.mongoUrl, { useNewUrlParser: true })
   .then(() => console.log('MongoDB Connected'))
