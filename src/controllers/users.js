@@ -85,26 +85,43 @@ const findUser = async function(req, res) {
 };
 
 const changePassword = async function(req, res) {
-  const curUserId = getCurUserId(req);
+  let { password, newPassword, email } = req.body;
 
-  const curUser = await User.findOne({ _id: curUserId });
-  let { password, newPassword } = req.body;
-  const match = await bcrypt.compare(password, curUser.password);
-
-  if (match) {
-    bcrypt.genSalt(10, function(err, salt) {
-      bcrypt.hash(newPassword, salt, async function(err, hash) {
-        newPassword = hash;
-        const result = await User.updateOne(
-          { _id: curUserId },
-          { password: newPassword }
-        );
-
-        if (result) res.json(RestResponse.Success('Success..'));
+  if (password === undefined) {
+    console.log(email, password, newPassword);
+    const user = await User.findOne({ email });
+    if (user) {
+      bcrypt.genSalt(10, function(err, salt) {
+        bcrypt.hash(newPassword, salt, async function(err, hash) {
+          newPassword = hash;
+          const result = await User.updateOne(
+            { _id: user_id },
+            { password: newPassword }
+          );
+          if (result) res.json(RestResponse.Success('Success..'));
+        });
       });
-    });
+    }
+    console.log('no  .....');
   } else {
-    throw new PermissionDeny('Password Incorrect..');
+    const curUserId = getCurUserId(req);
+    const curUser = await User.findOne({ _id: curUserId });
+    const match = await bcrypt.compare(password, curUser.password);
+    if (match) {
+      bcrypt.genSalt(10, function(err, salt) {
+        bcrypt.hash(newPassword, salt, async function(err, hash) {
+          newPassword = hash;
+          const result = await User.updateOne(
+            { _id: curUserId },
+            { password: newPassword }
+          );
+
+          if (result) res.json(RestResponse.Success('Success..'));
+        });
+      });
+    } else {
+      throw new PermissionDeny('Password Incorrect..');
+    }
   }
 };
 
@@ -164,7 +181,7 @@ const forgetPassword = async (req, res) => {
     subject: 'Change Password',
     html: `<b>Your verification code is ${code}</b>`
   });
-  res.json(RestResponse.Success(code));
+  res.json(RestResponse.Success({ code, email }));
 };
 module.exports = {
   signUp,
