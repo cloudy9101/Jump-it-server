@@ -21,13 +21,13 @@ async function saveData(data, id) {
   switch (keys[0]) {
     case 'step': {
       const { step, date } = data;
-      const obj = await StepCount.findOne({
+      const obj = await StepCount.find({
         userId: id,
-        endDate: step.endDate
+        endDate: { $gte: step.startDate, $lte: step.endDate }
       });
       if (obj) {
         if (isExit(step.endDate, obj.endDate)) {
-          await obj.deleteOne({ userId: obj.id });
+          await obj.deleteMany({ userId: obj.id });
         }
       }
 
