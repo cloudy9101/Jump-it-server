@@ -19,14 +19,19 @@ const addFood = async function(req, res) {
 
   const {
     name,
-    value
+    value,
+    imgUri,
+    imgIndex
   } = req.body;
 
   const newFood = new Food({
     name,
     value,
+    imgUri,
+    imgIndex,
     userId: curUserId
   });
+
   const result = await newFood.save();
 
   if(result) {
@@ -41,7 +46,9 @@ const updateFood = async function(req, res) {
   const foodId = req.params.id;
   const {
     name,
-    value
+    value,
+    imgUri,
+    imgIndex
   } = req.body;
 
   const food = await Food.findById(foodId);
@@ -51,6 +58,11 @@ const updateFood = async function(req, res) {
 
   if(name != null) { food.name = name; }
   if(value != null) { food.value = value; }
+  if(imgUri != null) { food.imgUri = imgUri; }
+  if(imgIndex != null) {
+    if(food.imgIndex != imgIndex){ food.imgUri = null; }
+    food.imgIndex = imgIndex;
+  }
   const result = await food.save();
 
   if(result) {
