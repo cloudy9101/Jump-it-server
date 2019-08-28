@@ -87,43 +87,24 @@ const findUser = async function(req, res) {
 };
 
 const changePassword = async function(req, res) {
-  let { password, newPassword, email } = req.body;
+  let { password, newPassword } = req.body;
+  const curUserId = getCurUserId(req);
+  const curUser = await User.findOne({ _id: curUserId });
+  const match = await bcrypt.compare(password, curUser.password);
+  if (match) {
+    bcrypt.genSalt(10, function(err, salt) {
+      bcrypt.hash(newPassword, salt, async function(err, hash) {
+        newPassword = hash;
+        const result = await User.updateOne(
+          { _id: curUserId },
+          { password: newPassword }
+        );
 
-  if (password === undefined) {
-    console.log(email, password, newPassword);
-    const user = await User.findOne({ email });
-    if (user) {
-      bcrypt.genSalt(10, function(err, salt) {
-        bcrypt.hash(newPassword, salt, async function(err, hash) {
-          newPassword = hash;
-          const result = await User.updateOne(
-            { _id: user_id },
-            { password: newPassword }
-          );
-          if (result) res.json(RestResponse.Success('Success..'));
-        });
+        if (result) res.json(RestResponse.Success('Success..'));
       });
-    }
-    console.log('no  .....');
+    });
   } else {
-    const curUserId = getCurUserId(req);
-    const curUser = await User.findOne({ _id: curUserId });
-    const match = await bcrypt.compare(password, curUser.password);
-    if (match) {
-      bcrypt.genSalt(10, function(err, salt) {
-        bcrypt.hash(newPassword, salt, async function(err, hash) {
-          newPassword = hash;
-          const result = await User.updateOne(
-            { _id: curUserId },
-            { password: newPassword }
-          );
-
-          if (result) res.json(RestResponse.Success('Success..'));
-        });
-      });
-    } else {
-      throw new PermissionDeny('Password Incorrect..');
-    }
+    throw new PermissionDeny('Password Incorrect..');
   }
 };
 
@@ -143,7 +124,7 @@ const updateUser = async (req, res) => {
   }
 };
 
-const updateNotificationEnabled = async(req, res) => {
+const updateNotificationEnabled = async (req, res) => {
   const curUserId = getCurUserId(req);
 
   const { notificationEnabled } = req.body;
@@ -162,8 +143,26 @@ getCurUserId = req => {
   const token = req.get('Authorization').split(' ')[1];
   return jwt.verify(token, config.privateKey).id;
 };
-
 const forgetPassword = async (req, res) => {
+  const { password, email } = req.body;
+  let plainPassword = password;
+  const curUser = await User.findOne({ email: email });
+
+  bcrypt.genSalt(10, function(err, salt) {
+    bcrypt.hash(plainPassword, salt, async function(err, hash) {
+      if (err) throw err;
+      plainPassword = hash;
+
+      const result = await User.updateOne(
+        { _id: curUser._id },
+        { password: plainPassword }
+      );
+
+      if (result) res.json(RestResponse.Success('Success..'));
+    });
+  });
+};
+const sendEmail = async (req, res) => {
   const { email } = req.body;
 
   const code = Math.floor(100000 + Math.random() * 900000);
@@ -195,16 +194,16 @@ const deviceReg = async function(req, res) {
   if (!curUser) throw new NotFound('User not found');
 
   let fcmToken = await FcmToken.findOne({ userId: curUser._id, deviceId });
-  if(fcmToken) {
+  if (fcmToken) {
     fcmToken.token = regToken;
     await fcmToken.save();
   } else {
-    fcmToken = new FcmToken({ userId: curUser._id, deviceId, token: regToken })
+    fcmToken = new FcmToken({ userId: curUser._id, deviceId, token: regToken });
     await fcmToken.save();
   }
 
   res.json(RestResponse.Success(fcmToken.userId));
-}
+};
 
 const deviceUnreg = async function(req, res) {
   const token = req.get('Authorization').split(' ')[1];
@@ -217,16 +216,17 @@ const deviceUnreg = async function(req, res) {
   await FcmToken.deleteMany({ userId: curUser._id, deviceId });
 
   res.json(RestResponse.Success());
-}
+};
 
 module.exports = {
   signUp,
   signIn,
   findUser,
-  forgetPassword,
+  sendEmail,
   changePassword,
   updateUser,
   updateNotificationEnabled,
   deviceReg,
-  deviceUnreg
+  deviceUnreg,
+  forgetPassword
 };
