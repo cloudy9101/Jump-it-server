@@ -28,14 +28,14 @@ const saveMeasure = async (req, res) => {
   if (!resultOfHighBlood || !resultOfSugar) {
     const curHighBlood = new HighBlood({
       userId: curUserId,
-      low,
-      high,
+      low: parseInt(low),
+      high: parseInt(high),
       date: today
     });
 
     const curSugarIntake = new SugarIntake({
       userId: curUserId,
-      value,
+      value: parseInt(value),
       date: today
     });
     await curHighBlood.save();
@@ -184,6 +184,42 @@ const readSugar = async (req, res) => {
   const { date, type } = req.params;
 
   const { first, last, dateArr } = getDateQueryInfo(type, date);
+  const labels = getLabels(type, dateArr);
+  // if (type.toUpperCase() === 'YEAR') {
+  //   let data = [];
+  //   for (let i = 0; i < 12; i++) {
+  //     const result = await SugarIntake.aggregate([
+  //       {
+  //         $match: {
+  //           date: {
+  //             $gte: moment(first)
+  //               .add(i, 'months')
+  //               .toDate(),
+  //             $lte: moment(first)
+  //               .endOf('month')
+  //               .add(i, 'months')
+  //               .toDate()
+  //           }
+  //         }
+  //       },
+  //       { $group: { _id: null, value: { $sum: '$value' } } }
+  //     ]);
+
+  //     console.log(result);
+  //     if (result[0] === undefined) {
+  //       data.push(0);
+  //     } else {
+  //       data.push(result[0].value);
+  //     }
+  //   }
+  //   console.log(data);
+  //   res.json(
+  //     RestResponse.Success({
+  //       labels,
+  //       datasets: [{ data }]
+  //     })
+  //   );
+  // } else {
   const result = await SugarIntake.find(
     {
       userId: curUserId,
@@ -198,7 +234,7 @@ const readSugar = async (req, res) => {
   if (!result) {
     throw new NotFound('Data not found');
   }
-  const labels = getLabels(type, dateArr);
+
   let data = [];
   dateArr.forEach(d => {
     let flag = true;
@@ -225,137 +261,241 @@ const readStepCount = async (req, res) => {
   const curUserId = jwt.verify(token, config.privateKey).id;
   const { date, type } = req.params;
   const { first, last, dateArr } = getDateQueryInfo(type, date);
-
-  const result = await StepCount.find(
-    {
-      userId: curUserId,
-      endDate: {
-        $lte: last,
-        $gte: first
-      }
-    },
-    { userId: false, _id: false }
-  );
-
-  if (!result) {
-    throw new NotFound('Data not found');
-  }
   const labels = getLabels(type, dateArr);
-  let data = [];
-  dateArr.forEach(d => {
-    let flag = true;
-    result.forEach(v => {
-      if (
-        d.getDate() === v.endDate.getDate() &&
-        d.getMonth() === v.endDate.getMonth()
-      ) {
-        data.push(v.value);
-        flag = false;
+  if (type.toUpperCase() === 'YEAR') {
+    let data = [];
+    for (let i = 0; i < 12; i++) {
+      const result = await StepCount.aggregate([
+        {
+          $match: {
+            startDate: {
+              $gte: moment(first)
+                .add(i, 'months')
+                .toDate(),
+              $lte: moment(first)
+                .endOf('month')
+                .add(i, 'months')
+                .toDate()
+            }
+          }
+        },
+        { $group: { _id: null, value: { $sum: '$value' } } }
+      ]);
+
+      if (result[0] === undefined) {
+        data.push(0);
+      } else {
+        data.push(result[0].value);
+      }
+    }
+
+    res.json(
+      RestResponse.Success({
+        labels,
+        datasets: [{ data }]
+      })
+    );
+  } else {
+    const result = await StepCount.find(
+      {
+        userId: curUserId,
+        endDate: {
+          $lte: last,
+          $gte: first
+        }
+      },
+      { userId: false, _id: false }
+    );
+
+    if (!result) {
+      throw new NotFound('Data not found');
+    }
+
+    let data = [];
+    dateArr.forEach(d => {
+      let flag = true;
+      result.forEach(v => {
+        if (
+          d.getDate() === v.endDate.getDate() &&
+          d.getMonth() === v.endDate.getMonth()
+        ) {
+          data.push(v.value);
+          flag = false;
+        }
+      });
+      if (flag) {
+        data.push(0);
       }
     });
-    if (flag) {
-      data.push(0);
-    }
-  });
 
-  res.json(
-    RestResponse.Success({
-      labels,
-      datasets: [{ data }]
-    })
-  );
+    res.json(
+      RestResponse.Success({
+        labels,
+        datasets: [{ data }]
+      })
+    );
+  }
 };
 const readFloors = async (req, res) => {
   const token = req.get('Authorization').split(' ')[1];
   const curUserId = jwt.verify(token, config.privateKey).id;
   const { date, type } = req.params;
+
   const { first, last, dateArr } = getDateQueryInfo(type, date);
-
-  const result = await Floor.find(
-    {
-      userId: curUserId,
-      endDate: {
-        $lte: last,
-        $gte: first
-      }
-    },
-    { userId: false, _id: false }
-  );
-
-  if (!result) {
-    throw new NotFound('Data not found');
-  }
   const labels = getLabels(type, dateArr);
+  if (type.toUpperCase() === 'YEAR') {
+    let data = [];
+    for (let i = 0; i < 12; i++) {
+      const result = await Floor.aggregate([
+        {
+          $match: {
+            startDate: {
+              $gte: moment(first)
+                .add(i, 'months')
+                .toDate(),
+              $lte: moment(first)
+                .endOf('month')
+                .add(i, 'months')
+                .toDate()
+            }
+          }
+        },
+        { $group: { _id: null, value: { $sum: '$value' } } }
+      ]);
 
-  let data = [];
-  dateArr.forEach(d => {
-    let flag = true;
-    result.forEach(v => {
-      if (
-        d.getDate() === v.endDate.getDate() &&
-        d.getMonth() === v.endDate.getMonth()
-      ) {
-        data.push(v.value);
-        flag = false;
+      if (result[0] === undefined) {
+        data.push(0);
+      } else {
+        data.push(result[0].value);
+      }
+    }
+
+    res.json(
+      RestResponse.Success({
+        labels,
+        datasets: [{ data }]
+      })
+    );
+  } else {
+    const result = await Floor.find(
+      {
+        userId: curUserId,
+        endDate: {
+          $lte: last,
+          $gte: first
+        }
+      },
+      { userId: false, _id: false }
+    );
+
+    if (!result) {
+      throw new NotFound('Data not found');
+    }
+
+    let data = [];
+    dateArr.forEach(d => {
+      let flag = true;
+      result.forEach(v => {
+        if (
+          d.getDate() === v.endDate.getDate() &&
+          d.getMonth() === v.endDate.getMonth()
+        ) {
+          data.push(v.value);
+          flag = false;
+        }
+      });
+      if (flag) {
+        data.push(0);
       }
     });
-    if (flag) {
-      data.push(0);
-    }
-  });
 
-  res.json(
-    RestResponse.Success({
-      labels,
-      datasets: [{ data }]
-    })
-  );
+    res.json(
+      RestResponse.Success({
+        labels,
+        datasets: [{ data }]
+      })
+    );
+  }
 };
 const readDistance = async (req, res) => {
   const token = req.get('Authorization').split(' ')[1];
   const curUserId = jwt.verify(token, config.privateKey).id;
   const { date, type } = req.params;
   const { first, last, dateArr } = getDateQueryInfo(type, date);
-
-  const result = await Distance.find(
-    {
-      userId: curUserId,
-      endDate: {
-        $lte: last,
-        $gte: first
-      }
-    },
-    { userId: false, _id: false }
-  );
-
-  if (!result) {
-    throw new NotFound('Data not found');
-  }
   const labels = getLabels(type, dateArr);
+  if (type.toUpperCase() === 'YEAR') {
+    let data = [];
+    for (let i = 0; i < 12; i++) {
+      const result = await Distance.aggregate([
+        {
+          $match: {
+            startDate: {
+              $gte: moment(first)
+                .add(i, 'months')
+                .toDate(),
+              $lte: moment(first)
+                .endOf('month')
+                .add(i, 'months')
+                .toDate()
+            }
+          }
+        },
+        { $group: { _id: null, value: { $sum: '$value' } } }
+      ]);
 
-  let data = [];
-  dateArr.forEach(d => {
-    let flag = true;
-    result.forEach(v => {
-      if (
-        d.getDate() === v.endDate.getDate() &&
-        d.getMonth() === v.endDate.getMonth()
-      ) {
-        data.push(Math.round(v.value));
-        flag = false;
+      if (result[0] === undefined) {
+        data.push(0);
+      } else {
+        data.push(result[0].value);
+      }
+    }
+
+    res.json(
+      RestResponse.Success({
+        labels,
+        datasets: [{ data }]
+      })
+    );
+  } else {
+    const result = await Distance.find(
+      {
+        userId: curUserId,
+        endDate: {
+          $lte: last,
+          $gte: first
+        }
+      },
+      { userId: false, _id: false }
+    );
+
+    if (!result) {
+      throw new NotFound('Data not found');
+    }
+
+    let data = [];
+    dateArr.forEach(d => {
+      let flag = true;
+      result.forEach(v => {
+        if (
+          d.getDate() === v.endDate.getDate() &&
+          d.getMonth() === v.endDate.getMonth()
+        ) {
+          data.push(Math.round(v.value));
+          flag = false;
+        }
+      });
+      if (flag) {
+        data.push(0);
       }
     });
-    if (flag) {
-      data.push(0);
-    }
-  });
 
-  res.json(
-    RestResponse.Success({
-      labels,
-      datasets: [{ data }]
-    })
-  );
+    res.json(
+      RestResponse.Success({
+        labels,
+        datasets: [{ data }]
+      })
+    );
+  }
 };
 function getLabels(type, arr) {
   switch (type.toUpperCase()) {
