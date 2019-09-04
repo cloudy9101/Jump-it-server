@@ -14,7 +14,6 @@ const {
 
 const signUp = async function(req, res) {
   const {
-    email,
     username,
     password,
     avator,
@@ -25,6 +24,7 @@ const signUp = async function(req, res) {
     height,
     weight
   } = req.body;
+  const email = req.body.email.toLowerCase();
 
   const isUserExist = await User.findOne({ email });
   if (isUserExist) throw new UnprocessableEntity('Email Exist..');
@@ -61,7 +61,9 @@ const signUp = async function(req, res) {
 };
 
 const signIn = async function(req, res) {
-  const { email, password } = req.body;
+  const { password } = req.body;
+  const email = req.body.email.toLowerCase();
+
   const curUser = await User.findOne({ email });
   if (!curUser) throw new NotFound('Email Not Register..');
   const result = await bcrypt.compare(password, curUser.password);
@@ -88,6 +90,8 @@ const findUser = async function(req, res) {
 
 const changePassword = async function(req, res) {
   let { password, newPassword } = req.body;
+  const email = req.body.email.toLowerCase();
+
   const curUserId = getCurUserId(req);
   const curUser = await User.findOne({ _id: curUserId });
   const match = await bcrypt.compare(password, curUser.password);
@@ -144,7 +148,8 @@ getCurUserId = req => {
   return jwt.verify(token, config.privateKey).id;
 };
 const forgetPassword = async (req, res) => {
-  const { password, email } = req.body;
+  const { password } = req.body;
+  const email = req.body.email.toLowerCase();
   let plainPassword = password;
   const curUser = await User.findOne({ email: email });
 
@@ -162,8 +167,9 @@ const forgetPassword = async (req, res) => {
     });
   });
 };
+
 const sendEmail = async (req, res) => {
-  const { email } = req.body;
+  const email = req.body.email.toLowerCase();
 
   const code = Math.floor(100000 + Math.random() * 900000);
 
