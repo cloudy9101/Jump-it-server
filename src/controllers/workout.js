@@ -21,13 +21,13 @@ async function saveData(data, id) {
   switch (keys[0]) {
     case 'step': {
       const { step, date } = data;
-      const obj = await StepCount.findOne({
+      const obj = await StepCount.find({
         userId: id,
         endDate: { $gte: step.startDate, $lte: step.endDate }
       });
       if (obj) {
         if (isExit(step.endDate, obj.endDate)) {
-          await obj.deleteOne({ userId: obj.id });
+          await obj.deleteMany({ userId: obj.id });
         }
       }
 
@@ -43,13 +43,13 @@ async function saveData(data, id) {
     }
     case 'distance': {
       const { distance, date } = data;
-      const obj = await Distance.findOne({
+      const obj = await Distance.find({
         userId: id,
         endDate: distance.endDate
       });
       if (obj) {
         if (isExit(distance.endDate, obj.endDate)) {
-          await obj.deleteOne({ userId: obj.id });
+          await obj.deleteMany({ userId: obj.id });
         }
       }
       const newDistance = new Distance({
@@ -64,10 +64,10 @@ async function saveData(data, id) {
     }
     case 'floor': {
       const { floor, date } = data;
-      const obj = await Floor.findOne({ userId: id, endDate: floor.endDate });
+      const obj = await Floor.find({ userId: id, endDate: floor.endDate });
       if (obj) {
         if (isExit(floor.endDate, obj.endDate)) {
-          await obj.deleteOne({ userId: obj.id });
+          await obj.deleteMany({ userId: obj.id });
         }
       }
       const newfloor = new Floor({
