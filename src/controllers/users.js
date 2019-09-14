@@ -174,16 +174,19 @@ const sendEmail = async (req, res) => {
   const code = Math.floor(100000 + Math.random() * 900000);
   console.log(email);
   let transporter = nodemailer.createTransport({
-    host: 'smtp.gmail.com',
+    host: "smtp-mail.outlook.com",
+    secureConnection: false,
     port: 587,
-    secure: false,
+    tls: {
+       ciphers:'SSLv3'
+    },
     auth: {
-      user: config.user,
-      pass: config.password
+        user: config.user,
+        pass: config.password
     }
   });
   let info = await transporter.sendMail({
-    from: '"Jump-It"',
+    from: 'jump_it <jump_it@outlook.com>',
     to: email,
     subject: 'Change Password',
     html: `<b>Your verification code is ${code}</b>`
