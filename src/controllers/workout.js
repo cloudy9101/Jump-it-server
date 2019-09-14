@@ -21,42 +21,63 @@ async function saveData(data, id) {
   switch (keys[0]) {
     case 'step': {
       const { step, date } = data;
-      const obj = await StepCount.find({
-        userId: id,
-        endDate: { $gte: step.startDate, $lte: step.endDate }
-      });
-      if (obj) {
-        if (isExit(step.endDate, obj.endDate)) {
-          await obj.deleteMany({ userId: obj.id });
-        }
-      }
 
+      const arr = await StepCount.find({
+        userId: id,
+        endDate: { $lte: step.endDate },
+        startDate: { $gte: step.startDate }
+      });
+      if (arr.length > 1) {
+        arr.forEach(async e => {
+          await e.deleteOne();
+        });
+      } else if (arr.length == 1) {
+        if (arr[0].value !== step.value) {
+          await StepCount.updateOne(
+            { userId: id, endDate: arr[0].endDate },
+            { value: step.value, endDate: step.endDate }
+          );
+          return;
+        }
+        return;
+      }
       const newStep = new StepCount({
         userId: id,
         value: step.value,
-        startDate: moment(step.startDate).toDate(),
-        endDate: moment(step.endDate).toDate(),
+        startDate: step.startDate,
+        endDate: step.endDate,
         date: moment(date).toDate()
       });
-      newStep.save();
+      await newStep.save();
       break;
     }
     case 'distance': {
       const { distance, date } = data;
-      const obj = await Distance.find({
+      const arr = await Distance.find({
         userId: id,
-        endDate: distance.endDate
+        endDate: { $lte: distance.endDate },
+        startDate: { $gte: distance.startDate }
       });
-      if (obj) {
-        if (isExit(distance.endDate, obj.endDate)) {
-          await obj.deleteMany({ userId: obj.id });
+      if (arr.length > 1) {
+        arr.forEach(async e => {
+          await e.deleteOne();
+        });
+      } else if (arr.length == 1) {
+        if (arr[0].value !== distance.value) {
+          await Distance.updateOne(
+            { userId: id, endDate: arr[0].endDate },
+            { value: distance.value, endDate: distance.endDate }
+          );
+          return;
         }
+        return;
       }
+
       const newDistance = new Distance({
         userId: id,
         value: distance.value,
-        startDate: moment(distance.startDate).toDate(),
-        endDate: moment(distance.endDate).toDate(),
+        startDate: distance.startDate,
+        endDate: distance.endDate,
         date: moment(date).toDate()
       });
       newDistance.save();
@@ -64,17 +85,31 @@ async function saveData(data, id) {
     }
     case 'floor': {
       const { floor, date } = data;
-      const obj = await Floor.find({ userId: id, endDate: floor.endDate });
-      if (obj) {
-        if (isExit(floor.endDate, obj.endDate)) {
-          await obj.deleteMany({ userId: obj.id });
+      const arr = await Floor.find({
+        userId: id,
+        endDate: { $lte: floor.endDate },
+        startDate: { $gte: floor.startDate }
+      });
+      if (arr.length > 1) {
+        arr.forEach(async e => {
+          await e.deleteOne();
+        });
+      } else if (arr.length == 1) {
+        if (arr[0].value !== floor.value) {
+          await Distance.updateOne(
+            { userId: id, endDate: arr[0].endDate },
+            { value: floor.value, endDate: floor.endDate }
+          );
+          return;
         }
+        return;
       }
+
       const newfloor = new Floor({
         userId: id,
         value: floor.value,
-        startDate: moment(floor.startDate).toDate(),
-        endDate: moment(floor.endDate).toDate(),
+        startDate: floor.startDate,
+        endDate: floor.endDate,
         date: moment(date).toDate()
       });
       newfloor.save();
@@ -83,16 +118,6 @@ async function saveData(data, id) {
     default:
       break;
   }
-}
-function isExit(today, past) {
-  return (
-    moment(today)
-      .toDate()
-      .getTime() >=
-    moment(today)
-      .toDate()
-      .getTime()
-  );
 }
 
 module.exports = { save };
