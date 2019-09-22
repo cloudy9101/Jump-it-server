@@ -66,7 +66,7 @@ const readHighBlood = async (req, res) => {
   const { date, type } = req.params;
 
   const { first, last, dateArr } = getDateQueryInfo(type, date);
-
+  console.log(first, last);
   const result = await HighBlood.find(
     {
       userId: curUserId,
@@ -77,6 +77,8 @@ const readHighBlood = async (req, res) => {
     },
     { userId: false, _id: false } //
   );
+
+  console.log(result);
   if (!result) {
     throw new NotFound('Data not found');
   }
@@ -185,41 +187,6 @@ const readSugar = async (req, res) => {
 
   const { first, last, dateArr } = getDateQueryInfo(type, date);
   const labels = getLabels(type, dateArr);
-  // if (type.toUpperCase() === 'YEAR') {
-  //   let data = [];
-  //   for (let i = 0; i < 12; i++) {
-  //     const result = await SugarIntake.aggregate([
-  //       {
-  //         $match: {
-  //           date: {
-  //             $gte: moment(first)
-  //               .add(i, 'months')
-  //               .toDate(),
-  //             $lte: moment(first)
-  //               .endOf('month')
-  //               .add(i, 'months')
-  //               .toDate()
-  //           }
-  //         }
-  //       },
-  //       { $group: { _id: null, value: { $sum: '$value' } } }
-  //     ]);
-
-  //     console.log(result);
-  //     if (result[0] === undefined) {
-  //       data.push(0);
-  //     } else {
-  //       data.push(result[0].value);
-  //     }
-  //   }
-  //   console.log(data);
-  //   res.json(
-  //     RestResponse.Success({
-  //       labels,
-  //       datasets: [{ data }]
-  //     })
-  //   );
-  // } else {
   const result = await SugarIntake.find(
     {
       userId: curUserId,

@@ -3,26 +3,26 @@ const RestResponse = require('../utils/RestResponse');
 const { NotFound } = require('../middleWare/errorHandler');
 const config = require('../config');
 const Food = require('../models/food');
-
+const {
+  createFood,
+  findFoods,
+  update,
+  removeFood
+} = require('../services/FoodService');
 const foods = async function(req, res) {
   const token = req.get('Authorization').split(' ')[1];
   const curUserId = jwt.verify(token, config.privateKey).id;
 
-  const foods = await Food.find({ userId: curUserId });
+  const foods = await findFoods(curUserId);
 
-  res.json(RestResponse.Success(foods))
-}
+  res.json(RestResponse.Success(foods));
+};
 
 const addFood = async function(req, res) {
   const token = req.get('Authorization').split(' ')[1];
   const curUserId = jwt.verify(token, config.privateKey).id;
 
-  const {
-    name,
-    value,
-    imgUri,
-    imgIndex
-  } = req.body;
+  const { name, value, imgUri, imgIndex } = req.body;
 
   const newFood = new Food({
     name,
@@ -31,60 +31,31 @@ const addFood = async function(req, res) {
     imgIndex,
     userId: curUserId
   });
-
-  const result = await newFood.save();
-
-  if(result) {
-    res.json(RestResponse.Success(newFood, 'Add food success'));
+  const result = await createFood(newFood);
+  if (result) {
+    res.json(RestResponse.Success(newFood, result));
   }
-}
+};
 
 const updateFood = async function(req, res) {
   const token = req.get('Authorization').split(' ')[1];
   const curUserId = jwt.verify(token, config.privateKey).id;
-
   const foodId = req.params.id;
-  const {
-    name,
-    value,
-    imgUri,
-    imgIndex
-  } = req.body;
-
-  const food = await Food.findById(foodId);
-  if(food.userId != curUserId) {
-    throw new NotFound('Food not found');
-  }
-
-  if(name != null) { food.name = name; }
-  if(value != null) { food.value = value; }
-  if(imgUri != null) { food.imgUri = imgUri; }
-  if(imgIndex != null) {
-    if(food.imgIndex != imgIndex){ food.imgUri = null; }
-    food.imgIndex = imgIndex;
-  }
-  const result = await food.save();
-
-  if(result) {
-    res.json(RestResponse.Success(food, 'Update food success'));
-  }
-}
+  const { name, value, imgUri, imgIndex } = req.body;
+  const food = await update(foodId, curUserId, name, value, imgUri, imgIndex);
+  res.json(RestResponse.Success(food, 'Update food success'));
+};
 
 const deleteFood = async function(req, res) {
   const token = req.get('Authorization').split(' ')[1];
   const curUserId = jwt.verify(token, config.privateKey).id;
 
   const foodId = req.params.id;
-  const food = await Food.findById(foodId);
+  const result = await removeFood(foodId, curUserId);
 
-  if(food === null || curUserId != food.userId) {
-    throw new NotFound('Food not found');
-  }
-
-  const result = await food.delete();
-  if(result) {
+  if (result) {
     res.json(RestResponse.Success('Delete food success'));
   }
-}
+};
 
 module.exports = { foods, addFood, updateFood, deleteFood };
