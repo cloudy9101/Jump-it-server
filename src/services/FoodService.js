@@ -1,9 +1,16 @@
 const Food = require('../models/food');
 
-const createFood = async function(food) {
-  const result = await food.save();
+const createFood = async function(curUserId, name, value, imgUri, imgIndex) {
+  const newFood = new Food({
+    name,
+    value,
+    imgUri,
+    imgIndex,
+    userId: curUserId
+  });
+  const result = await newFood.save();
   if (result) {
-    return 'Add food success';
+    return newFood;
   }
 };
 

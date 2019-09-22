@@ -11,6 +11,7 @@ const {
   findFloor,
   findDistance
 } = require('../services/measureService');
+
 const saveMeasure = async (req, res) => {
   const token = req.get('Authorization').split(' ')[1];
   const curUserId = jwt.verify(token, config.privateKey).id;
