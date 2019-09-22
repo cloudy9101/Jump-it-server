@@ -2,38 +2,34 @@ const jwt = require('jsonwebtoken');
 const RestResponse = require('../utils/RestResponse');
 const { NotFound } = require('../middleWare/errorHandler');
 const config = require('../config');
-const Food = require('../models/food');
 const {
   createFood,
   findFoods,
   update,
   removeFood
-} = require('../services/FoodService');
+} = require('../services/foodService');
 const foods = async function(req, res) {
   const token = req.get('Authorization').split(' ')[1];
   const curUserId = jwt.verify(token, config.privateKey).id;
-
   const foods = await findFoods(curUserId);
-
   res.json(RestResponse.Success(foods));
 };
 
 const addFood = async function(req, res) {
   const token = req.get('Authorization').split(' ')[1];
   const curUserId = jwt.verify(token, config.privateKey).id;
-
   const { name, value, imgUri, imgIndex } = req.body;
-
-  const newFood = new Food({
-    name,
-    value,
-    imgUri,
-    imgIndex,
-    userId: curUserId
-  });
-  const result = await createFood(newFood);
-  if (result) {
-    res.json(RestResponse.Success(newFood, result));
+  console.log('coming.....');
+  // const newFood = new Food({
+  //   name,
+  //   value,
+  //   imgUri,
+  //   imgIndex,
+  //   userId: curUserId
+  // });
+  const newFood = await createFood(curUserId, name, value, imgUri, imgIndex);
+  if (newFood) {
+    res.json(RestResponse.Success(newFood, 'Add food success'));
   }
 };
 
