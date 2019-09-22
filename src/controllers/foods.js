@@ -2,7 +2,6 @@ const jwt = require('jsonwebtoken');
 const RestResponse = require('../utils/RestResponse');
 const { NotFound } = require('../middleWare/errorHandler');
 const config = require('../config');
-const Food = require('../models/food');
 const {
   createFood,
   findFoods,
