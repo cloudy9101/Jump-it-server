@@ -1,6 +1,7 @@
 const fs = require('fs');
 const file = fs.readFileSync(__dirname + '/../config/exercises.json', 'utf8');
 const exercisesPlan = JSON.parse(file);
+const Diet = require('../models/Diet');
 
 const calBMI = function(height, weight) {
   return weight / (height / 100);
@@ -22,4 +23,23 @@ const getExercisePlan = function(user, date = new Date()) {
   return exercisesPlan[planLevel][weekday];
 }
 
-module.exports = { getExercisePlan };
+const getDiets = async (userId) => {
+  const diets = await Diet.find({ userId: userId });
+  return diets;
+}
+
+const addDietService = async (userId, name, value) => {
+  const newDiet = new Diet({
+    name,
+    value,
+    userId
+  });
+  await newDiet.save();
+  return newDiet;
+}
+
+module.exports = {
+  getExercisePlan,
+  getDiets,
+  addDietService
+};

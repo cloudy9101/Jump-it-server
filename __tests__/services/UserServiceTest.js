@@ -26,7 +26,7 @@ const userParams = {
   weight: 75
 }
 
-afterEach(async () => {
+afterAll(async () => {
   await User.deleteMany({});
 })
 
