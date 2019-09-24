@@ -10,12 +10,6 @@ const asyncHandler = require('./src/utils/asyncHandler');
 
 require('./src/utils/AgendaUtil');
 
-let dbUrl = process.env.mode === 'TESTING' ? config.db.testMongoUrl : config.db.mongoUrl;
-mongoose
-  .connect(dbUrl, { useNewUrlParser: true })
-  .then(() => process.env.mode != 'TESTING' && console.log('MongoDB Connected'))
-  .catch(err => console.log(err));
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -26,6 +20,11 @@ app.use('/api/users', userRouter);
 app.use(errorHandler);
 
 if (process.env.mode != 'TESTING') {
+  mongoose
+    .connect(config.db.mongoUrl, { useNewUrlParser: true })
+    .then(() => console.log('MongoDB Connected'))
+    .catch(err => console.log(err));
+
   app.listen(config.server.port, () =>
     console.log(`Server running on port ${config.server.port}`)
   );
