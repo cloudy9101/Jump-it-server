@@ -10,10 +10,10 @@ const {
   UnprocessableEntity
 } = require('../middleWare/errorHandler');
 
-const getCurUserId = (req) => {
+const getCurUserId = req => {
   const token = req.get('Authorization').split(' ')[1];
   return jwt.verify(token, config.privateKey).id;
-}
+};
 
 const signUpService = async ({
   email,
@@ -56,7 +56,7 @@ const signUpService = async ({
     const token = await jwt.sign(payload, config.privateKey);
     if (token) return token;
   }
-}
+};
 
 const signInService = async (email, password) => {
   const curUser = await User.findOne({ email });
@@ -71,7 +71,7 @@ const signInService = async (email, password) => {
   } else {
     throw new PermissionDeny('Password Incorrect..');
   }
-}
+};
 
 const changePasswordService = async (userId, password, newPassword) => {
   const curUser = await User.findOne({ _id: userId });
@@ -83,21 +83,17 @@ const changePasswordService = async (userId, password, newPassword) => {
       { password: hashedPassword }
     );
 
-    console.log(result)
+    console.log(result);
     return result;
   } else {
     throw new PermissionDeny('Password Incorrect..');
   }
-}
+};
 
-const updateUserService = async (userId, {
-  avator,
-  username,
-  firstName,
-  lastName,
-  height,
-  weight
-}) => {
+const updateUserService = async (
+  userId,
+  { avator, username, firstName, lastName, height, weight }
+) => {
   const curUser = await User.findOne({ _id: userId });
   const result = await User.updateOne(
     { _id: curUser._id },
@@ -105,20 +101,20 @@ const updateUserService = async (userId, {
   );
   if (result) {
     const user = await User.findOne({ _id: curUser._id });
-    return user
+    return user;
   }
-}
+};
 
-const updateNotificationEnabledService = async (userId, notificationEnabled) => {
-  const result = await User.updateOne(
-    { _id: userId },
-    { notificationEnabled }
-  );
+const updateNotificationEnabledService = async (
+  userId,
+  notificationEnabled
+) => {
+  const result = await User.updateOne({ _id: userId }, { notificationEnabled });
   if (result) {
     const user = await User.findOne({ _id: userId });
-    return user
+    return user;
   }
-}
+};
 
 const forgetPasswordService = async (email, password) => {
   const curUser = await User.findOne({ email: email });
@@ -129,20 +125,20 @@ const forgetPasswordService = async (email, password) => {
     { password: hashedPassword }
   );
   return result;
-}
+};
 
-const sendEmailService = async (email) => {
+const sendEmailService = async email => {
   const code = Math.floor(100000 + Math.random() * 900000);
   let transporter = nodemailer.createTransport({
-    host: "smtp-mail.outlook.com",
+    host: 'smtp-mail.outlook.com',
     secureConnection: false,
     port: 587,
     tls: {
-       ciphers:'SSLv3'
+      ciphers: 'SSLv3'
     },
     auth: {
-        user: config.user,
-        pass: config.password
+      user: config.user,
+      pass: config.password
     }
   });
   let info = await transporter.sendMail({
@@ -152,7 +148,7 @@ const sendEmailService = async (email) => {
     html: `<b>Your verification code is ${code}</b>`
   });
   return code;
-}
+};
 
 const deviceRegService = async (userId, deviceId, regToken) => {
   const curUser = await User.findOne({ _id: userId });
@@ -167,27 +163,27 @@ const deviceRegService = async (userId, deviceId, regToken) => {
     await fcmToken.save();
   }
   return fcmToken;
-}
+};
 
 const deviceUnregService = async (userId, deviceId) => {
   const curUser = await User.findOne({ _id: userId });
   if (!curUser) throw new NotFound('User not found');
 
   await FcmToken.deleteMany({ userId: curUser._id, deviceId });
-}
+};
 
-const hashPassword = async (password) => {
+const hashPassword = async password => {
   const saltRounds = 10;
 
   const hashedPassword = await new Promise((resolve, reject) => {
     bcrypt.hash(password, saltRounds, function(err, hash) {
-      if (err) reject(err)
-      resolve(hash)
+      if (err) reject(err);
+      resolve(hash);
     });
-  })
+  });
 
-  return hashedPassword
-}
+  return hashedPassword;
+};
 
 module.exports = {
   getCurUserId,
@@ -201,4 +197,4 @@ module.exports = {
   deviceRegService,
   deviceUnregService,
   hashPassword
-}
+};
