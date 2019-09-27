@@ -97,7 +97,6 @@ describe('food test', () => {
       foodParams.imgIndex
     );
     const result = await FoodService.update(newFood._id, user_id, 'newName');
-
     expect(result.name).toBe('newName');
   });
 });
