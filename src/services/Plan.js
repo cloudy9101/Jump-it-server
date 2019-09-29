@@ -40,6 +40,14 @@ const addDietService = async (userId, name, value) => {
   return newDiet;
 }
 
+const delDietService = async (userId, dietId) => {
+  const diet = await Diet.findById(dietId);
+  if (diet === null || userId != diet.userId) {
+    throw new NotFound('Food not found');
+  }
+  return await diet.delete();
+}
+
 const defaultDiets = async (user) => {
   let planLevel = "normal";
   if(user.height && user.weight) {
@@ -54,7 +62,7 @@ const defaultDiets = async (user) => {
   }
   const diets = dietsPlan[planLevel];
   for (let diet of diets) {
-    await addDietService(user._id, diet.name, diet.value);    
+    await addDietService(user._id, diet.name, diet.value);
   }
 }
 
@@ -62,5 +70,6 @@ module.exports = {
   getExercisePlan,
   getDiets,
   addDietService,
+  delDietService,
   defaultDiets
 };

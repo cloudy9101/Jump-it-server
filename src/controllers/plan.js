@@ -32,4 +32,15 @@ const addDiet = async function(req, res) {
   res.json(RestResponse.Success(newDiet, 'Add diet success'));
 };
 
-module.exports = { exercises, diets, addDiet };
+const delDiet = async function(req, res) {
+  const curUserId = getCurUserId(req);
+  const dietId = req.params.id;
+
+  const result = await Plan.delDietService(curUserId, dietId);
+
+  if (result) {
+    res.json(RestResponse.Success('Delete diet success'));
+  }
+}
+
+module.exports = { exercises, diets, addDiet, delDiet };

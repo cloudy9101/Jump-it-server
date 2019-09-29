@@ -12,7 +12,7 @@ const {
   deviceUnreg,
   forgetPassword
 } = require('../controllers/users');
-const { exercises, diets, addDiet } = require('../controllers/plan');
+const { exercises, diets, addDiet, delDiet } = require('../controllers/plan');
 const {
   foods,
   updateFood,
@@ -52,6 +52,7 @@ router.post('/deviceUnreg', asyncHandler(deviceUnreg));
 router.get('/plan/exercises', asyncHandler(exercises));
 router.get('/plan/diets', asyncHandler(diets));
 router.post('/plan/diets', asyncHandler(addDiet));
+router.delete('/plan/diets/:id', asyncHandler(delDiet));
 //workout
 router.post('/workout/save', asyncHandler(save));
 //measure
