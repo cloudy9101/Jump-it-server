@@ -28,7 +28,7 @@ const addDiet = async function(req, res) {
   const curUser = await User.findOne({ _id: curUserId });
   const { name, value } = req.body;
 
-  const newDiet = Plan.addDietService(curUserId, name, value);
+  const newDiet = await Plan.addDietService(curUserId, name, value);
   res.json(RestResponse.Success(newDiet, 'Add diet success'));
 };
 

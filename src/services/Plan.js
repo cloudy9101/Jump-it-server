@@ -1,6 +1,8 @@
 const fs = require('fs');
 const file = fs.readFileSync(__dirname + '/../config/exercises.json', 'utf8');
+const fileForDietPlan = fs.readFileSync(__dirname + '/../config/diets.json', 'utf8');
 const exercisesPlan = JSON.parse(file);
+const dietsPlan = JSON.parse(fileForDietPlan);
 const Diet = require('../models/Diet');
 
 const calBMI = function(height, weight) {
@@ -38,8 +40,27 @@ const addDietService = async (userId, name, value) => {
   return newDiet;
 }
 
+const defaultDiets = async (user) => {
+  let planLevel = "normal";
+  if(user.height && user.weight) {
+    const bmi = calBMI(user.height, user.weight);
+    if(bmi < 24) {
+      planLevel = "normal";
+    } else if (bmi < 29.9) {
+      planLevel = "low";
+    } else {
+      planLevel = "lower";
+    }
+  }
+  const diets = dietsPlan[planLevel];
+  for (let diet of diets) {
+    await addDietService(user._id, diet.name, diet.value);    
+  }
+}
+
 module.exports = {
   getExercisePlan,
   getDiets,
-  addDietService
+  addDietService,
+  defaultDiets
 };

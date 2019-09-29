@@ -9,6 +9,7 @@ const {
   PermissionDeny,
   UnprocessableEntity
 } = require('../middleWare/errorHandler');
+const { defaultDiets } = require('./Plan');
 
 const getCurUserId = req => {
   const token = req.get('Authorization').split(' ')[1];
@@ -50,6 +51,7 @@ const signUpService = async ({
   const result = await newUser.save();
   const curUser = await User.findOne({ email });
   if (curUser) {
+    defaultDiets(curUser);
     const payload = {
       id: curUser._id
     };

@@ -1,0 +1,28 @@
+{
+  "normal": [
+    { "name": "Burrito", "value": "1" },
+    { "name": "Baked sweet potato", "value": "1" },
+    { "name": "Salsa", "value": "1/2 cup" },
+    { "name": "Low sodium cheese", "value": "1/2 cup" },
+    { "name": "Greek yogurt", "value": "1/2 cup" },
+    { "name": "Spaghetti with turkey", "value": "1 bowl" }
+  ],
+  "lower": [
+    { "name": "Waffles", "value": "2" },
+    { "name": "Pre-cooked shrimp", "value": "10" },
+    { "name": "Chopped red bell pepper", "value": "1/2 cup" },
+    { "name": "Peanuts", "value": "2 tablespoons" },
+    { "name": "Greek yogurt", "value": "1/2 cup" },
+    { "name": "Spaghetti with turkey", "value": "1 bowl" }
+  ],
+  "lowest": [
+    { "name": "Whole-grain pita", "value": "1" },
+    { "name": "Avocado", "value": "1/2" },
+    { "name": "Hard-boiled eggs", "value": "2" },
+    { "name": "Blueberries", "value": "1/2 cup" },
+    { "name": "Vietnamese Chicken and Noodle Bowl", "value": "1 bowl" },
+    { "name": "Spaghetti With Shrimp", "value": "1 bowl" },
+    { "name": "Tomato", "value": "1" },
+    { "name": "Olives", "value": "1/2 cup" }
+  ]
+}
